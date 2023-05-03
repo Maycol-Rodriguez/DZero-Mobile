@@ -2,7 +2,7 @@ import 'package:dzero/config/themes/colors_theme.dart';
 import 'package:flutter/material.dart';
 
 class VPerfilScreen extends StatelessWidget {
-  static const String name = 'v_perfil_screen';
+  static const String name = 'perfil_screen';
 
   const VPerfilScreen({Key? key}) : super(key: key);
 
@@ -10,6 +10,7 @@ class VPerfilScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(),
       body: Column(
         children: [
           Expanded(
@@ -60,7 +61,7 @@ class VPerfilScreen extends StatelessWidget {
                   bottom: 0,
                   child: Container(
                     width: double.infinity,
-                    height: size.height * 0.31,
+                    height: size.height * 0.28,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: const BorderRadius.only(

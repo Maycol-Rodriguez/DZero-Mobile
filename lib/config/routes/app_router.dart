@@ -8,6 +8,11 @@ final routesProvider = StateProvider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: '/',
+        name: VPresentacionScreen.name,
+        builder: (context, state) => const VPresentacionScreen(),
+      ),
+      GoRoute(
+        path: '/home',
         name: VHomeScreen.name,
         builder: (context, state) => const VHomeScreen(),
       ),
@@ -23,8 +28,8 @@ final routesProvider = StateProvider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/demo',
-        name: DemoDataScreen.name,
-        builder: (context, state) => const DemoDataScreen(),
+        name: VDemoDataScreen.name,
+        builder: (context, state) => const VDemoDataScreen(),
       ),
     ],
   );

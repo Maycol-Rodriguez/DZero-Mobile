@@ -4,10 +4,10 @@ import 'package:dzero/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DemoDataScreen extends ConsumerWidget {
+class VDemoDataScreen extends ConsumerWidget {
   static const String name = 'demo_data_screen';
 
-  const DemoDataScreen({Key? key}) : super(key: key);
+  const VDemoDataScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,6 +19,7 @@ class DemoDataScreen extends ConsumerWidget {
     }
 
     return Scaffold(
+      appBar: AppBar(),
       body: FutureBuilder(
         future: dataList(),
         initialData: data,

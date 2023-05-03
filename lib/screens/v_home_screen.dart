@@ -4,11 +4,9 @@ import 'package:dzero/config/services/cloudinary_service.dart';
 import 'package:dzero/config/themes/colors_theme.dart';
 import 'package:dzero/controllers/controllers.dart';
 import 'package:dzero/models/models.dart';
-import 'package:dzero/screens/v_demo_data.dart';
 import 'package:dzero/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class VHomeScreen extends ConsumerWidget {
@@ -17,7 +15,14 @@ class VHomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    GlobalKey<ScaffoldState> drawerKey = GlobalKey<ScaffoldState>();
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        title: null,
+      ),
+      key: drawerKey,
+      drawer: DrawerWidget(drawerKey),
       body: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -27,14 +32,6 @@ class VHomeScreen extends ConsumerWidget {
             ContainerSummary(),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: colorSecondary,
-        foregroundColor: Colors.white,
-        onPressed: () {
-          context.pushNamed(DemoDataScreen.name);
-        },
-        label: const Text('data'),
       ),
     );
   }
@@ -55,12 +52,11 @@ class ContainerDetails extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const <Widget>[
-            SizedBox(height: 30),
+            SizedBox(height: 5),
             _Separator('Bienvenido'),
             UserDetailsWidget(),
             SizedBox(height: 20),
             _Separator('Tus casos'),
-            SizedBox(height: 20),
             Expanded(child: UserCaseWidget())
           ],
         ),
@@ -158,7 +154,7 @@ class ContainerSummary extends StatelessWidget {
             bottom: 0,
             child: Container(
               width: double.infinity,
-              height: size.height * 0.30,
+              height: size.height * 0.28,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: const BorderRadius.only(
@@ -208,7 +204,7 @@ class ContainerSummary extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(right: 20, top: 30, child: CameraWidget(size: size))
+          Positioned(right: 20, top: 0, child: CameraWidget(size: size))
         ],
       ),
     );

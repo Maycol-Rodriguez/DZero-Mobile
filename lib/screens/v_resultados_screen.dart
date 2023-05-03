@@ -10,6 +10,7 @@ class VResultadosScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: null),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(

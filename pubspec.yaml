@@ -46,6 +46,7 @@ dependencies:
   firebase_database: ^10.1.1
   flutter_dotenv: ^5.0.2
   awesome_circular_chart: ^1.0.0
+  animate_do: ^3.0.2
 
 dev_dependencies:
   flutter_test:
