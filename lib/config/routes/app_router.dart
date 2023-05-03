@@ -17,6 +17,11 @@ final routesProvider = StateProvider<GoRouter>((ref) {
         builder: (context, state) => const VPerfilScreen(),
       ),
       GoRoute(
+        path: '/resultado',
+        name: VResultadosScreen.name,
+        builder: (context, state) => const VResultadosScreen(),
+      ),
+      GoRoute(
         path: '/demo',
         name: DemoDataScreen.name,
         builder: (context, state) => const DemoDataScreen(),

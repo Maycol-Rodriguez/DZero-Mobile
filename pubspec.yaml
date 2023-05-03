@@ -45,6 +45,7 @@ dependencies:
   cloudinary_public: ^0.13.0
   firebase_database: ^10.1.1
   flutter_dotenv: ^5.0.2
+  awesome_circular_chart: ^1.0.0
 
 dev_dependencies:
   flutter_test:

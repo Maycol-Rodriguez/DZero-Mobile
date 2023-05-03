@@ -33,7 +33,7 @@ class MyApp extends ConsumerWidget {
       ),
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        title: 'Material App',
+        title: 'dzero App',
         routerConfig: routes,
         theme: AppTheme().theme(),
       ),

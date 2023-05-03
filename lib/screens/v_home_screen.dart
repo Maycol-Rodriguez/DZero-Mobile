@@ -17,15 +17,14 @@ class VHomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ContainerDetails(size: size),
-            ContainerSummary(size: size),
+          children: const [
+            ContainerDetails(),
+            ContainerSummary(),
           ],
         ),
       ),
@@ -36,6 +35,35 @@ class VHomeScreen extends ConsumerWidget {
           context.pushNamed(DemoDataScreen.name);
         },
         label: const Text('data'),
+      ),
+    );
+  }
+}
+
+class ContainerDetails extends StatelessWidget {
+  const ContainerDetails({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: SizedBox(
+        height: size.height * 0.6,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const <Widget>[
+            SizedBox(height: 30),
+            _Separator('Bienvenido'),
+            UserDetailsWidget(),
+            SizedBox(height: 20),
+            _Separator('Tus casos'),
+            SizedBox(height: 20),
+            Expanded(child: UserCaseWidget())
+          ],
+        ),
       ),
     );
   }
@@ -109,47 +137,14 @@ class CameraWidgetState extends ConsumerState<CameraWidget> {
   }
 }
 
-class ContainerDetails extends StatelessWidget {
-  const ContainerDetails({
-    super.key,
-    required this.size,
-  });
-
-  final Size size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: SizedBox(
-        height: size.height * 0.6,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const <Widget>[
-            SizedBox(height: 30),
-            _Separator('Bienvenido'),
-            UserDetailsWidget(),
-            SizedBox(height: 20),
-            _Separator('Tus casos'),
-            SizedBox(height: 20),
-            Expanded(child: UserCaseWidget())
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class ContainerSummary extends StatelessWidget {
   const ContainerSummary({
     super.key,
-    required this.size,
   });
-
-  final Size size;
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Expanded(
       flex: 1,
       child: Stack(
@@ -182,17 +177,38 @@ class ContainerSummary extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
+                    CircleAvatar(
+                      backgroundColor: colorTerceary,
+                      child: Icon(
+                        Icons.location_on,
+                        color: Colors.white,
+                        size: 32,
+                      ),
+                    ),
+                    SizedBox(height: 20),
                     Text(
-                      'asd',
+                      'Ultimos Casos',
                       style: TextStyle(color: Colors.black),
-                    )
+                    ),
+                    SizedBox(height: 15),
+                    Text(
+                      'Miguel Perez',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'RCD Abandonados en ...',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.normal),
+                    ),
                   ],
                 ),
               ),
             ),
           ),
-          Positioned(right: 20, top: 25, child: CameraWidget(size: size))
+          Positioned(right: 20, top: 30, child: CameraWidget(size: size))
         ],
       ),
     );
