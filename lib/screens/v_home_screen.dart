@@ -170,8 +170,7 @@ class ContainerSummary extends StatelessWidget {
                 ],
               ),
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
+                padding: const EdgeInsets.all(30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
@@ -183,7 +182,7 @@ class ContainerSummary extends StatelessWidget {
                         size: 32,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 15),
                     Text(
                       'Ultimos Casos',
                       style: TextStyle(color: Colors.black),
