@@ -1,4 +1,4 @@
-package com.example.dzero
+package com.rodriguezmallqui.dzero
 
 import io.flutter.embedding.android.FlutterActivity
 
