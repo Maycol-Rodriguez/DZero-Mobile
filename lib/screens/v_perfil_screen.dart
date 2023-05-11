@@ -29,7 +29,7 @@ class VPerfilScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    'Maycol Rodriguez',
+                    'Miguel Perez',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -82,7 +82,7 @@ class VPerfilScreen extends StatelessWidget {
                       child: Column(
                         children: const [
                           _DatosWidget(
-                            email: 'Maycol354@gmail.com',
+                            email: 'Miguel354@gmail.com',
                             celular: '998238145',
                             direccion: 'Calle Santa Lucia 223',
                           ),

@@ -16,21 +16,15 @@ class ItemDrawer {
 
 const appMenuItem = <ItemDrawer>[
   ItemDrawer(
+    title: 'Inicio',
+    subTitle: 'Pantalla de inicio',
+    link: '/home',
+    icon: Icons.home,
+  ),
+  ItemDrawer(
     title: 'Perfil',
     subTitle: 'Perfil de usuario',
     link: '/perfil',
     icon: Icons.person,
-  ),
-  ItemDrawer(
-    title: 'Resultados',
-    subTitle: 'Resultados de la AI',
-    link: '/resultado',
-    icon: Icons.density_small_outlined,
-  ),
-  ItemDrawer(
-    title: 'Demo',
-    subTitle: 'Demo de la aplicacion',
-    link: '/demo',
-    icon: Icons.document_scanner_outlined,
   ),
 ];

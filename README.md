@@ -18,3 +18,10 @@ Para cambiar el icono de la aplicación
 ```
 flutter pub run flutter_launcher_icons
 ```
+
+Android AAB
+```
+flutter build apk
+flutter build appbundle
+path: build\app\outputs\bundle\release\app-release.aab
+```

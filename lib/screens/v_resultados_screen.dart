@@ -10,7 +10,7 @@ class VResultadosScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: null),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -19,7 +19,7 @@ class VResultadosScreen extends StatelessWidget {
               children: [
                 SizedBox(
                   width: double.infinity,
-                  height: 400,
+                  height: 350,
                   child: _GraficoCircular(),
                 ),
                 const SizedBox(height: 20),
@@ -32,39 +32,39 @@ class VResultadosScreen extends StatelessWidget {
                   children: const [
                     _CardDetalle(
                       tipo: 'RCD',
-                      porcentaje: '35%',
-                      icono: '',
-                      color: Colors.blue,
+                      porcentaje: '',
+                      icono: 'assets/icons/rcd.png',
+                      color: Color(0xFF1f2858),
                     ),
                     _CardDetalle(
                       tipo: 'Plastico',
-                      porcentaje: '8%',
-                      icono: '',
+                      porcentaje: '',
+                      icono: 'assets/icons/plastico.png',
                       color: Colors.blue,
                     ),
                     _CardDetalle(
                       tipo: 'Metal',
-                      porcentaje: '5%',
-                      icono: '',
-                      color: Colors.blue,
+                      porcentaje: '',
+                      icono: 'assets/icons/metal.png',
+                      color: Color(0xFF515151),
                     ),
                     _CardDetalle(
                       tipo: 'Papel',
-                      porcentaje: '5%',
-                      icono: '',
-                      color: Colors.blue,
+                      porcentaje: '',
+                      icono: 'assets/icons/papel.png',
+                      color: Color(0xFF262626),
                     ),
                     _CardDetalle(
                       tipo: 'Madera',
-                      porcentaje: '35%',
-                      icono: '',
-                      color: Colors.blue,
+                      porcentaje: '',
+                      icono: 'assets/icons/madera.png',
+                      color: Color(0xFF66452e),
                     ),
                     _CardDetalle(
                       tipo: 'Carton',
-                      porcentaje: '12%',
-                      icono: '',
-                      color: Colors.blue,
+                      porcentaje: '',
+                      icono: 'assets/icons/carton.png',
+                      color: Color(0xFF66452e),
                     ),
                   ],
                 )
@@ -145,7 +145,12 @@ class _CardDetalle extends StatelessWidget {
           children: [
             CircleAvatar(
               backgroundColor: color,
-              radius: 15,
+              radius: 25,
+              child: Image.asset(
+                icono,
+                width: 35,
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(height: 5),
             Text(

@@ -1,6 +1,8 @@
 import 'package:dzero/config/themes/colors_theme.dart';
+import 'package:dzero/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 class UserCaseWidget extends StatelessWidget {
   const UserCaseWidget({Key? key}) : super(key: key);
@@ -8,22 +10,25 @@ class UserCaseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: const [
-        Expanded(
+      children: [
+        const Expanded(
           child: _RegisteredCase(
             FontAwesomeIcons.addressBook,
-            '18',
-            'Casos Registrados',
+            '10',
+            'Tus Casos',
             colorSecondary,
           ),
         ),
-        SizedBox(width: 20),
+        const SizedBox(width: 20),
         Expanded(
-          child: _RegisteredCase(
-            FontAwesomeIcons.solidMap,
-            '23',
-            'Casos en tu zona',
-            colorTerceary,
+          child: GestureDetector(
+            onTap: () => context.pushNamed(VDemoDataScreen.name),
+            child: const _RegisteredCase(
+              FontAwesomeIcons.solidMap,
+              '23',
+              'Ultimos casos',
+              colorTerceary,
+            ),
           ),
         ),
       ],

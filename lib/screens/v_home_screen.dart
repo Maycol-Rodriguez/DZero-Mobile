@@ -1,9 +1,11 @@
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:dzero/config/mappers/data_mapper_location.dart';
+import 'package:dzero/config/routes/app_router.dart';
 import 'package:dzero/config/services/cloudinary_service.dart';
 import 'package:dzero/config/themes/colors_theme.dart';
 import 'package:dzero/controllers/controllers.dart';
 import 'package:dzero/models/models.dart';
+import 'package:dzero/screens/screens.dart';
 import 'package:dzero/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -113,13 +115,14 @@ class CameraWidgetState extends ConsumerState<CameraWidget> {
             location: 'location aleatorio',
             description: 'Descripcion de prueba',
             picture: response.secureUrl,
-            user: User(email: 'prueba@gmail.com', name: 'user-Prueba3'),
+            user: User(email: 'prueba@gmail.com', name: 'user-de-prueba'),
           );
 
           await ref.read(subirReportesProvider(datos).future);
           ref.read(obtenerReportesProvider.notifier).state =
               CDataProvider().obtenerReportes();
 
+          await ref.read(routesProvider).pushNamed(VResultadosScreen.name);
           setState(() {});
         } on CloudinaryException catch (e) {
           Text(e.message ?? '');
@@ -133,13 +136,13 @@ class CameraWidgetState extends ConsumerState<CameraWidget> {
   }
 }
 
-class ContainerSummary extends StatelessWidget {
+class ContainerSummary extends ConsumerWidget {
   const ContainerSummary({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
     return Expanded(
       flex: 1,
@@ -171,34 +174,39 @@ class ContainerSummary extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    CircleAvatar(
-                      backgroundColor: colorTerceary,
-                      child: Icon(
-                        Icons.location_on,
-                        color: Colors.white,
-                        size: 32,
+                child: GestureDetector(
+                  onTap: () => ref
+                      .read(routesProvider)
+                      .pushNamed(VResultadosScreen.name),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      CircleAvatar(
+                        backgroundColor: colorTerceary,
+                        child: Icon(
+                          Icons.location_on,
+                          color: Colors.white,
+                          size: 32,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 15),
-                    Text(
-                      'Ultimos Casos',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    SizedBox(height: 15),
-                    Text(
-                      'Miguel Perez',
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      'RCD Abandonados en ...',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.normal),
-                    ),
-                  ],
+                      SizedBox(height: 15),
+                      Text(
+                        'Ultimo Caso',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      SizedBox(height: 15),
+                      Text(
+                        'Miguel Perez',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        'RCD Abandonados en ...',
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

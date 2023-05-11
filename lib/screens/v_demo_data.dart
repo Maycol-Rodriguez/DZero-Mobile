@@ -47,6 +47,7 @@ class _DataContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme.bodySmall;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -82,24 +83,47 @@ class _DataContainer extends StatelessWidget {
               height: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    data.location ?? 'No location',
-                    style: const TextStyle(color: Colors.white),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.person,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        'Usuario: ',
+                        style: textStyle!.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(data.user.name, style: textStyle),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.description,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        'Descripción: ',
+                        style: textStyle.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 5),
-                  Text(
-                    '${data.user.name} ${data.user.email}',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  const SizedBox(height: 5),
-                  Flexible(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25),
                     child: Text(
-                      data.description!,
+                      '${data.description}',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white),
+                      textAlign: TextAlign.justify,
+                      style: textStyle,
                     ),
                   )
                 ],
