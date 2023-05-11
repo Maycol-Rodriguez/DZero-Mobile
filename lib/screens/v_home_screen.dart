@@ -143,6 +143,13 @@ class ContainerSummary extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    List<DataMapperLocation> data = [];
+
+    Future<List<DataMapperLocation>> dataList() async {
+      data = await ref.watch(obtenerReportesProvider);
+      return data.reversed.toList();
+    }
+
     final size = MediaQuery.of(context).size;
     return Expanded(
       flex: 1,
@@ -172,42 +179,58 @@ class ContainerSummary extends ConsumerWidget {
                   ),
                 ],
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(30),
-                child: GestureDetector(
-                  onTap: () => ref
-                      .read(routesProvider)
-                      .pushNamed(VResultadosScreen.name),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CircleAvatar(
-                        backgroundColor: colorTerceary,
-                        child: Icon(
-                          Icons.location_on,
-                          color: Colors.white,
-                          size: 32,
+              child: FutureBuilder(
+                future: dataList(),
+                initialData: data,
+                builder: (context,
+                    AsyncSnapshot<List<DataMapperLocation>> snapshot) {
+                  final newData = snapshot.data;
+                  return ListView.builder(
+                    itemCount: newData!.length.clamp(0, 1),
+                    itemBuilder: (BuildContext context, int index) {
+                      final newData = snapshot.data![0];
+                      return Padding(
+                        padding: const EdgeInsets.all(30),
+                        child: GestureDetector(
+                          onTap: () => ref
+                              .read(routesProvider)
+                              .pushNamed(VResultadosScreen.name),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const CircleAvatar(
+                                backgroundColor: colorTerceary,
+                                child: Icon(
+                                  Icons.location_on,
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              const Text(
+                                'Ultimo Caso',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              const SizedBox(height: 15),
+                              Text(
+                                newData.user.name,
+                                style: const TextStyle(color: Colors.grey),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                newData.description ?? 'descripcion',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 15),
-                      Text(
-                        'Ultimo Caso',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      SizedBox(height: 15),
-                      Text(
-                        'Miguel Perez',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        'RCD Abandonados en ...',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.normal),
-                      ),
-                    ],
-                  ),
-                ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ),

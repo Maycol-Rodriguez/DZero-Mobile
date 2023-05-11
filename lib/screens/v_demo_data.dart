@@ -15,23 +15,25 @@ class VDemoDataScreen extends ConsumerWidget {
 
     Future<List<DataMapperLocation>> dataList() async {
       data = await ref.watch(obtenerReportesProvider);
-      return data;
+      return data.reversed.toList();
     }
 
     return Scaffold(
       appBar: AppBar(),
       body: FutureBuilder(
         future: dataList(),
-        initialData: data,
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        initialData: data.reversed.toList(),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<DataMapperLocation>> snapshot) {
+          final newData = snapshot.data;
           return ListView.builder(
-            itemCount: data.length,
+            itemCount: newData!.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 margin: const EdgeInsets.all(20),
                 height: 380,
                 width: double.infinity,
-                child: _DataContainer(data[index]),
+                child: _DataContainer(newData[index]),
               );
             },
           );
