@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class VDemoDataScreen extends ConsumerWidget {
-  static const String name = 'demo_data_screen';
+  static const String name = 'casos_screen';
 
   const VDemoDataScreen({Key? key}) : super(key: key);
 
@@ -23,12 +23,11 @@ class VDemoDataScreen extends ConsumerWidget {
       body: FutureBuilder(
         future: dataList(),
         initialData: data.reversed.toList(),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<DataMapperLocation>> snapshot) {
+        builder: (context, AsyncSnapshot<List<DataMapperLocation>> snapshot) {
           final newData = snapshot.data;
           return ListView.builder(
             itemCount: newData!.length,
-            itemBuilder: (BuildContext context, int index) {
+            itemBuilder: (context, int index) {
               return Container(
                 margin: const EdgeInsets.all(20),
                 height: 380,

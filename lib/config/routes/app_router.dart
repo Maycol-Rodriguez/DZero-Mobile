@@ -1,15 +1,26 @@
 import 'package:dzero/screens/screens.dart';
+import 'package:dzero/screens/v_registro_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 final routesProvider = StateProvider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/',
+    initialLocation: '/login',
     routes: [
       GoRoute(
         path: '/',
         name: VPresentacionScreen.name,
         builder: (context, state) => const VPresentacionScreen(),
+      ),
+      GoRoute(
+        path: '/login',
+        name: VLoginScreen.name,
+        builder: (context, state) => const VLoginScreen(),
+      ),
+      GoRoute(
+        path: '/registro',
+        name: VRegistroScreen.name,
+        builder: (context, state) => const VLoginScreen(),
       ),
       GoRoute(
         path: '/home',
@@ -27,7 +38,7 @@ final routesProvider = StateProvider<GoRouter>((ref) {
         builder: (context, state) => const VResultadosScreen(),
       ),
       GoRoute(
-        path: '/demo',
+        path: '/casos',
         name: VDemoDataScreen.name,
         builder: (context, state) => const VDemoDataScreen(),
       ),
