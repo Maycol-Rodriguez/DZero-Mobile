@@ -25,6 +25,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   awesome_circular_chart: ^1.0.0
   animate_do: ^3.0.2
+  formz: ^0.6.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1

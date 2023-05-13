@@ -34,4 +34,8 @@ class Environment {
       dotenv.env['IOS_STORAGE_BUCKET_FIREBASE']!;
   static String iosClientIdFirebase = dotenv.env['IOS_CLIENT_ID_FIREBASE']!;
   static String iosBundleIdFirebase = dotenv.env['IOS_BUNDLE_ID_FIREBASE']!;
+
+  // AUTHENTICATION - FIREBASE
+  static String firebaseAuthBaseUrl = dotenv.env['FIREBASE_AUTH_BASE_URL']!;
+  static String firebaseAuthApiKey = dotenv.env['FIREBASE_AUTH_API_KEY']!;
 }

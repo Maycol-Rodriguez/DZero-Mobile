@@ -20,7 +20,7 @@ final routesProvider = StateProvider<GoRouter>((ref) {
       GoRoute(
         path: '/registro',
         name: VRegistroScreen.name,
-        builder: (context, state) => const VLoginScreen(),
+        builder: (context, state) => const VRegistroScreen(),
       ),
       GoRoute(
         path: '/home',
