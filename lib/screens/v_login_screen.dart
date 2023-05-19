@@ -1,5 +1,6 @@
 import 'package:dzero/config/routes/app_router.dart';
 import 'package:dzero/config/themes/colors_theme.dart';
+import 'package:dzero/controllers/controllers.dart';
 import 'package:dzero/screens/v_registro_screen.dart';
 import 'package:dzero/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +27,9 @@ class VLoginScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 100),
+                const SizedBox(height: 80),
                 Container(
-                  height: size.height - 180, //80 los dos sizebox y 100 el ícono
+                  height: size.height, //80 los dos sizebox y 100 el ícono
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: scaffoldBackgroundColor,
@@ -52,21 +53,30 @@ class _LoginForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final loginForm = ref.watch(loginFormProvider);
     final textStyles = Theme.of(context).textTheme;
 
     return Column(
       children: [
-        const SizedBox(height: 50),
+        const SizedBox(height: 30),
         Text('Iniciar Sesión', style: textStyles.titleLarge),
         const SizedBox(height: 90),
-        const CustomTextFormField(
+        CustomTextFormField(
           label: 'Correo',
           keyboardType: TextInputType.emailAddress,
+          onChanged: (value) =>
+              ref.read(loginFormProvider.notifier).onEmailChanged(value),
+          errorMessage:
+              loginForm.isFormPosted ? loginForm.email.errorMessage : null,
         ),
         const SizedBox(height: 30),
-        const CustomTextFormField(
+        CustomTextFormField(
           label: 'Contraseña',
           obscureText: true,
+          onChanged: (value) =>
+              ref.read(loginFormProvider.notifier).onPasswordChanged(value),
+          errorMessage:
+              loginForm.isFormPosted ? loginForm.password.errorMessage : null,
         ),
         const SizedBox(height: 30),
         SizedBox(
@@ -75,7 +85,9 @@ class _LoginForm extends ConsumerWidget {
           child: CustomFilledButton(
             text: 'Ingresar',
             buttonColor: colorTerceary,
-            onPressed: () {},
+            onPressed: () {
+              ref.read(loginFormProvider.notifier).onFormSubmit();
+            },
           ),
         ),
         const SizedBox(height: 40),
@@ -100,7 +112,7 @@ class _LoginForm extends ConsumerWidget {
             onPressed: () {},
           ),
         ),
-        const Spacer(flex: 4),
+        const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

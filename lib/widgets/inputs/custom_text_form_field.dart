@@ -29,12 +29,12 @@ class CustomTextFormField extends StatelessWidget {
       borderRadius: BorderRadius.circular(40),
     );
 
-    const borderRadius = Radius.circular(15);
+    const borderRadius = Radius.circular(20);
 
     return Container(
       // padding: const EdgeInsets.only(bottom: 0, top: 15),
       decoration: const BoxDecoration(
-        color: Colors.black12,
+        color: Colors.black26,
         borderRadius: BorderRadius.all(
           borderRadius,
         ),
@@ -53,10 +53,10 @@ class CustomTextFormField extends StatelessWidget {
           enabledBorder: border,
           focusedBorder: border,
           errorBorder: border.copyWith(
-            borderSide: BorderSide(color: Colors.red.shade800),
+            borderSide: const BorderSide(color: Colors.transparent),
           ),
           focusedErrorBorder: border.copyWith(
-            borderSide: BorderSide(color: Colors.red.shade800),
+            borderSide: const BorderSide(color: Colors.transparent),
           ),
           isDense: true,
           label: label != null
