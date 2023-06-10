@@ -1,5 +1,5 @@
 import 'package:cloudinary_public/cloudinary_public.dart';
-import 'package:dzero/config/mappers/data_mapper_location.dart';
+import 'package:dzero/config/mappers/mappers.dart';
 import 'package:dzero/config/routes/app_router.dart';
 import 'package:dzero/config/services/cloudinary_service.dart';
 import 'package:dzero/config/themes/colors_theme.dart';
@@ -10,6 +10,7 @@ import 'package:dzero/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 class VHomeScreen extends ConsumerWidget {
   static const String name = 'home_screen';
@@ -18,6 +19,14 @@ class VHomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     GlobalKey<ScaffoldState> drawerKey = GlobalKey<ScaffoldState>();
+
+    List<DataMapperLocation> data = [];
+
+    Future<List<DataMapperLocation>> dataList() async {
+      data = await ref.watch(obtenerReportesProvider);
+      return data.reversed.toList();
+    }
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -25,22 +34,38 @@ class VHomeScreen extends ConsumerWidget {
       ),
       key: drawerKey,
       drawer: DrawerWidget(drawerKey),
-      body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            ContainerDetails(),
-            ContainerSummary(),
-          ],
-        ),
+      body: FutureBuilder(
+        future: dataList(),
+        initialData: data,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            return SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ContainerDetails(data.length, data.length),
+                  ContainerSummary(data, dataList()),
+                ],
+              ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }
 }
 
 class ContainerDetails extends StatelessWidget {
-  const ContainerDetails({
+  final int misCasos;
+  final int ultimosCasos;
+  const ContainerDetails(
+    this.misCasos,
+    this.ultimosCasos, {
     super.key,
   });
 
@@ -53,13 +78,13 @@ class ContainerDetails extends StatelessWidget {
         height: size.height * 0.6,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const <Widget>[
-            SizedBox(height: 5),
-            _Separator('Bienvenido'),
-            UserDetailsWidget(),
-            SizedBox(height: 20),
-            _Separator('Tus casos'),
-            Expanded(child: UserCaseWidget())
+          children: <Widget>[
+            const SizedBox(height: 5),
+            const _Separator('Bienvenido'),
+            const UserDetailsWidget(),
+            const SizedBox(height: 20),
+            const _Separator('Tus casos'),
+            Expanded(child: UserCaseWidget(misCasos, ultimosCasos))
           ],
         ),
       ),
@@ -83,7 +108,7 @@ class CameraWidgetState extends ConsumerState<CameraWidget> {
   @override
   Widget build(BuildContext context) {
     DataMapperLocation datos;
-
+    const uuid = Uuid();
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: colorTerceary,
@@ -112,10 +137,11 @@ class CameraWidgetState extends ConsumerState<CameraWidget> {
           );
 
           datos = DataMapperLocation(
-            location: 'location aleatorio',
-            description: 'Descripcion de prueba',
+            id: uuid.v4(),
+            location: 'Locacion de Muestra.',
+            description: 'Descripcion de Muestra.',
             picture: response.secureUrl,
-            user: User(email: 'prueba@gmail.com', name: 'user-de-prueba'),
+            user: User(email: 'user.email@gmail.com', name: 'usuario.name'),
           );
 
           await ref.read(subirReportesProvider(datos).future);
@@ -137,19 +163,16 @@ class CameraWidgetState extends ConsumerState<CameraWidget> {
 }
 
 class ContainerSummary extends ConsumerWidget {
-  const ContainerSummary({
+  final List<DataMapperLocation> data;
+  final Future<List<DataMapperLocation>> dataList;
+  const ContainerSummary(
+    this.data,
+    this.dataList, {
     super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<DataMapperLocation> data = [];
-
-    Future<List<DataMapperLocation>> dataList() async {
-      data = await ref.watch(obtenerReportesProvider);
-      return data.reversed.toList();
-    }
-
     final size = MediaQuery.of(context).size;
     return Expanded(
       flex: 1,
@@ -180,7 +203,7 @@ class ContainerSummary extends ConsumerWidget {
                 ],
               ),
               child: FutureBuilder(
-                future: dataList(),
+                future: dataList,
                 initialData: data,
                 builder: (context,
                     AsyncSnapshot<List<DataMapperLocation>> snapshot) {

@@ -4,6 +4,7 @@ import 'package:dzero/config/mappers/data_mapper_location.dart';
 
 class CDataProvider {
   final String baseUrl = Environment.baseUrl;
+  final dio = Dio();
 
   List<DataMapperLocation> dataLocation = [];
   bool isLoading = false;
@@ -13,12 +14,11 @@ class CDataProvider {
   Future<List<DataMapperLocation>> obtenerReportes() async {
     isLoading = true;
     final url = Uri.https(baseUrl, 'reports.json');
-    final response = await Dio().get(url.toString());
+    final response = await dio.get(url.toString());
     final Map<String, dynamic> data = response.data;
 
     data.forEach((key, value) {
       final dataTemp = DataMapperLocation.fromJson(value);
-      dataTemp.id = key;
       dataLocation.add(dataTemp);
     });
     isLoading = false;
@@ -26,12 +26,10 @@ class CDataProvider {
   }
 
   Future<void> subirReportes(DataMapperLocation data) async {
+    isSaving = true;
     final url = Uri.https(baseUrl, 'reports.json');
-    final response = await Dio().post(url.toString(), data: data.toJson());
-    final id = response.data['name'];
-
-    data.id = id;
+    await dio.post(url.toString(), data: data.toJson());
+    isSaving = false;
     dataLocation.add(data);
-    // obtenerReportes();
   }
 }

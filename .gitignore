@@ -1,3 +1,9 @@
+lib/models/m_login.dart
+lib/models/m_registro.dart
+lib/controllers/c_auth_service_provider.dart
+lib/controllers/c_login_provider.dart
+lib/controllers/c_login_provider_state.dart
+
 .env
 # Miscellaneous
 *.class

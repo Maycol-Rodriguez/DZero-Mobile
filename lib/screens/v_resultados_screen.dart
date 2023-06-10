@@ -12,64 +12,63 @@ class VResultadosScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 350,
-                  child: _GraficoCircular(),
-                ),
-                const SizedBox(height: 20),
-                GridView.count(
-                  shrinkWrap: true,
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                  childAspectRatio: 1.5,
-                  children: const [
-                    _CardDetalle(
-                      tipo: 'RCD',
-                      porcentaje: '',
-                      icono: 'assets/icons/rcd.png',
-                      color: Color(0xFF1f2858),
-                    ),
-                    _CardDetalle(
-                      tipo: 'Plastico',
-                      porcentaje: '',
-                      icono: 'assets/icons/plastico.png',
-                      color: Colors.blue,
-                    ),
-                    _CardDetalle(
-                      tipo: 'Metal',
-                      porcentaje: '',
-                      icono: 'assets/icons/metal.png',
-                      color: Color(0xFF515151),
-                    ),
-                    _CardDetalle(
-                      tipo: 'Papel',
-                      porcentaje: '',
-                      icono: 'assets/icons/papel.png',
-                      color: Color(0xFF262626),
-                    ),
-                    _CardDetalle(
-                      tipo: 'Madera',
-                      porcentaje: '',
-                      icono: 'assets/icons/madera.png',
-                      color: Color(0xFF66452e),
-                    ),
-                    _CardDetalle(
-                      tipo: 'Carton',
-                      porcentaje: '',
-                      icono: 'assets/icons/carton.png',
-                      color: Color(0xFF66452e),
-                    ),
-                  ],
-                )
-              ],
-            ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                height: 350,
+                child: _GraficoCircular(),
+              ),
+              const SizedBox(height: 20),
+              GridView.count(
+                physics: const ScrollPhysics(),
+                shrinkWrap: true,
+                crossAxisCount: 2,
+                mainAxisSpacing: 15,
+                crossAxisSpacing: 15,
+                childAspectRatio: 1.6,
+                children: const [
+                  _CardDetalle(
+                    tipo: 'RCD',
+                    porcentaje: '',
+                    icono: 'assets/icons/rcd.png',
+                    color: Color(0xFF1f2858),
+                  ),
+                  _CardDetalle(
+                    tipo: 'Plastico',
+                    porcentaje: '',
+                    icono: 'assets/icons/plastico.png',
+                    color: Colors.blue,
+                  ),
+                  _CardDetalle(
+                    tipo: 'Metal',
+                    porcentaje: '',
+                    icono: 'assets/icons/metal.png',
+                    color: Color(0xFF515151),
+                  ),
+                  _CardDetalle(
+                    tipo: 'Papel',
+                    porcentaje: '',
+                    icono: 'assets/icons/papel.png',
+                    color: Color(0xFF262626),
+                  ),
+                  _CardDetalle(
+                    tipo: 'Madera',
+                    porcentaje: '',
+                    icono: 'assets/icons/madera.png',
+                    color: Color(0xFF66452e),
+                  ),
+                  _CardDetalle(
+                    tipo: 'Carton',
+                    porcentaje: '',
+                    icono: 'assets/icons/carton.png',
+                    color: Color(0xFF66452e),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ),
@@ -84,7 +83,7 @@ class _GraficoCircular extends StatelessWidget {
         GlobalKey<AnimatedCircularChartState>();
     return AnimatedCircularChart(
       key: chartKey,
-      size: const Size(300.0, 300.0),
+      size: const Size(300, 300),
       startAngle: 90,
       initialChartData: const <CircularStackEntry>[
         CircularStackEntry(
@@ -105,7 +104,7 @@ class _GraficoCircular extends StatelessWidget {
       labelStyle: const TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.bold,
-        fontSize: 60.0,
+        fontSize: 90.0,
       ),
     );
   }
@@ -139,31 +138,36 @@ class _CardDetalle extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(10),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              backgroundColor: color,
-              radius: 25,
-              child: Image.asset(
-                icono,
-                width: 35,
-                fit: BoxFit.cover,
+            Align(
+              alignment: Alignment.topLeft,
+              child: CircleAvatar(
+                backgroundColor: color,
+                radius: 30,
+                child: Image.asset(
+                  icono,
+                  width: 45,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            const SizedBox(height: 5),
-            Text(
-              tipo,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Colors.black,
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  tipo,
+                  textAlign: TextAlign.right,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                ),
               ),
-            ),
-            Text(
-              porcentaje,
-              style: const TextStyle(fontSize: 13, color: Colors.grey),
             ),
           ],
         ),

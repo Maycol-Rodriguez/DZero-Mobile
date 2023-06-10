@@ -5,16 +5,23 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 class UserCaseWidget extends StatelessWidget {
-  const UserCaseWidget({Key? key}) : super(key: key);
+  final int misCasos;
+  final int ultimosCasos;
+
+  const UserCaseWidget(
+    this.misCasos,
+    this.ultimosCasos, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Expanded(
+        Expanded(
           child: _RegisteredCase(
             FontAwesomeIcons.addressBook,
-            '10',
+            '$ultimosCasos',
             'Tus Casos',
             colorSecondary,
           ),
@@ -23,9 +30,9 @@ class UserCaseWidget extends StatelessWidget {
         Expanded(
           child: GestureDetector(
             onTap: () => context.pushNamed(VDemoDataScreen.name),
-            child: const _RegisteredCase(
+            child: _RegisteredCase(
               FontAwesomeIcons.solidMap,
-              '23',
+              '$ultimosCasos',
               'Ultimos casos',
               colorTerceary,
             ),
