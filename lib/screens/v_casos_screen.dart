@@ -11,32 +11,26 @@ class VDemoDataScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<DataMapperLocation> data = [];
-
-    Future<List<DataMapperLocation>> dataList() async {
-      data = await ref.watch(obtenerReportesProvider);
-      return data.reversed.toList();
-    }
+    final data = ref.watch(obtenerReportesProvider);
 
     return Scaffold(
       appBar: AppBar(),
-      body: FutureBuilder(
-        future: dataList(),
-        initialData: data.reversed.toList(),
-        builder: (context, AsyncSnapshot<List<DataMapperLocation>> snapshot) {
-          final newData = snapshot.data;
+      body: data.when(
+        data: (value) {
           return ListView.builder(
-            itemCount: newData!.length,
+            itemCount: value.length,
             itemBuilder: (context, int index) {
               return Container(
                 margin: const EdgeInsets.all(20),
                 height: 380,
                 width: double.infinity,
-                child: _DataContainer(newData[index]),
+                child: _DataContainer(value.reversed.toList()[index]),
               );
             },
           );
         },
+        error: (error, __) => Center(child: Text('Error: $error')),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }

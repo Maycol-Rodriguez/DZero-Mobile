@@ -3,7 +3,6 @@ import 'package:dzero/config/mappers/mappers.dart';
 import 'package:dzero/config/routes/app_router.dart';
 import 'package:dzero/config/services/cloudinary_service.dart';
 import 'package:dzero/config/themes/colors_theme.dart';
-import 'package:dzero/controllers/controllers.dart';
 import 'package:dzero/models/models.dart';
 import 'package:dzero/screens/screens.dart';
 import 'package:dzero/widgets/widgets.dart';
@@ -20,12 +19,7 @@ class VHomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     GlobalKey<ScaffoldState> drawerKey = GlobalKey<ScaffoldState>();
 
-    List<DataMapperLocation> data = [];
-
-    Future<List<DataMapperLocation>> dataList() async {
-      data = await ref.watch(obtenerReportesProvider);
-      return data.reversed.toList();
-    }
+    final data = ref.watch(obtenerReportesProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -34,27 +28,21 @@ class VHomeScreen extends ConsumerWidget {
       ),
       key: drawerKey,
       drawer: DrawerWidget(drawerKey),
-      body: FutureBuilder(
-        future: dataList(),
-        initialData: data,
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.hasData) {
-            return SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ContainerDetails(data.length, data.length),
-                  ContainerSummary(data, dataList()),
-                ],
-              ),
+      body: SafeArea(
+        child: data.when(
+          data: (value) {
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ContainerDetails(value.length, value.length),
+                ContainerSummary(data, value.reversed.toList()),
+              ],
             );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
+          },
+          error: (error, __) => Center(child: Text('Error: $error')),
+          loading: () => const Center(child: CircularProgressIndicator()),
+        ),
       ),
     );
   }
@@ -124,9 +112,7 @@ class CameraWidgetState extends ConsumerState<CameraWidget> {
           source: ImageSource.camera,
           imageQuality: 30,
         );
-        if (pickedFile == null) {
-          return;
-        }
+        if (pickedFile == null) return;
 
         try {
           CloudinaryResponse response = await cloudinary.uploadFile(
@@ -143,13 +129,9 @@ class CameraWidgetState extends ConsumerState<CameraWidget> {
             picture: response.secureUrl,
             user: User(email: 'user.email@gmail.com', name: 'usuario.name'),
           );
-
-          await ref.read(subirReportesProvider(datos).future);
-          ref.read(obtenerReportesProvider.notifier).state =
-              CDataProvider().obtenerReportes();
-
-          await ref.read(routesProvider).pushNamed(VResultadosScreen.name);
-          setState(() {});
+          ref.read(routesProvider).pushNamed(VResultadosScreen.name);
+          ref.read(subirReportesProvider(datos));
+          ref.invalidate(obtenerReportesProvider);
         } on CloudinaryException catch (e) {
           Text(e.message ?? '');
         }
@@ -163,8 +145,9 @@ class CameraWidgetState extends ConsumerState<CameraWidget> {
 }
 
 class ContainerSummary extends ConsumerWidget {
-  final List<DataMapperLocation> data;
-  final Future<List<DataMapperLocation>> dataList;
+  final AsyncValue<List<DataMapperLocation>> data;
+  final List<DataMapperLocation> dataList;
+
   const ContainerSummary(
     this.data,
     this.dataList, {
@@ -186,76 +169,71 @@ class ContainerSummary extends ConsumerWidget {
             width: size.width,
             bottom: 0,
             child: Container(
-              width: double.infinity,
-              height: size.height * 0.28,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 5),
+                width: double.infinity,
+                height: size.height * 0.28,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
                   ),
-                ],
-              ),
-              child: FutureBuilder(
-                future: dataList,
-                initialData: data,
-                builder: (context,
-                    AsyncSnapshot<List<DataMapperLocation>> snapshot) {
-                  final newData = snapshot.data;
-                  return ListView.builder(
-                    itemCount: newData!.length.clamp(0, 1),
-                    itemBuilder: (BuildContext context, int index) {
-                      final newData = snapshot.data![0];
-                      return Padding(
-                        padding: const EdgeInsets.all(30),
-                        child: GestureDetector(
-                          onTap: () => ref
-                              .read(routesProvider)
-                              .pushNamed(VResultadosScreen.name),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const CircleAvatar(
-                                backgroundColor: colorTerceary,
-                                child: Icon(
-                                  Icons.location_on,
-                                  color: Colors.white,
-                                  size: 32,
-                                ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: data.when(
+                  data: (value) {
+                    final newData = dataList[0];
+                    return Padding(
+                      padding: const EdgeInsets.all(30),
+                      child: GestureDetector(
+                        onTap: () => ref
+                            .read(routesProvider)
+                            .pushNamed(VResultadosScreen.name),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const CircleAvatar(
+                              backgroundColor: colorTerceary,
+                              child: Icon(
+                                Icons.location_on,
+                                color: Colors.white,
+                                size: 32,
                               ),
-                              const SizedBox(height: 15),
-                              const Text(
-                                'Ultimo Caso',
-                                style: TextStyle(color: Colors.black),
+                            ),
+                            const SizedBox(height: 15),
+                            const Text(
+                              'Ultimo Caso',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            const SizedBox(height: 15),
+                            Text(
+                              newData.user.name,
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              newData.description ?? 'descripcion',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal,
                               ),
-                              const SizedBox(height: 15),
-                              Text(
-                                newData.user.name,
-                                style: const TextStyle(color: Colors.grey),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                newData.description ?? 'descripcion',
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
+                      ),
+                    );
+                  },
+                  error: (error, __) => Center(child: Text('Error: $error')),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                )),
           ),
           Positioned(right: 20, top: 0, child: CameraWidget(size: size))
         ],
