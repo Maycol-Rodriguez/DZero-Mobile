@@ -1,7 +1,6 @@
-import 'package:dzero/config/routes/app_router.dart';
-import 'package:dzero/config/themes/colors_theme.dart';
+import 'package:dzero/config/config.dart';
 import 'package:dzero/controllers/controllers.dart';
-import 'package:dzero/screens/v_registro_screen.dart';
+import 'package:dzero/screens/screens.dart';
 import 'package:dzero/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -64,19 +63,15 @@ class _LoginForm extends ConsumerWidget {
         CustomTextFormField(
           label: 'Correo',
           keyboardType: TextInputType.emailAddress,
-          onChanged: (value) =>
-              ref.read(loginFormProvider.notifier).onEmailChanged(value),
-          errorMessage:
-              loginForm.isFormPosted ? loginForm.email.errorMessage : null,
+          onChanged: (value) => ref.read(loginFormProvider.notifier).onEmailChanged(value),
+          errorMessage: loginForm.isFormPosted ? loginForm.email.errorMessage : null,
         ),
         const SizedBox(height: 30),
         CustomTextFormField(
           label: 'Contraseña',
           obscureText: true,
-          onChanged: (value) =>
-              ref.read(loginFormProvider.notifier).onPasswordChanged(value),
-          errorMessage:
-              loginForm.isFormPosted ? loginForm.password.errorMessage : null,
+          onChanged: (value) => ref.read(loginFormProvider.notifier).onPasswordChanged(value),
+          errorMessage: loginForm.isFormPosted ? loginForm.password.errorMessage : null,
         ),
         const SizedBox(height: 30),
         SizedBox(
@@ -121,9 +116,7 @@ class _LoginForm extends ConsumerWidget {
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
             ),
             TextButton(
-              onPressed: () => ref
-                  .read(routesProvider)
-                  .pushReplacementNamed(VRegistroScreen.name),
+              onPressed: () => ref.read(routesProvider).pushReplacementNamed(VRegistroScreen.name),
               child: const Text(
                 'Registrese',
                 style: TextStyle(color: colorTerceary),

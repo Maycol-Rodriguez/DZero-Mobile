@@ -1,4 +1,4 @@
-import 'package:dzero/config/mappers/mappers.dart';
+import 'package:dzero/config/config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 
@@ -52,15 +52,15 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
 
   onEmailChanged(String value) {
     final newEmail = Email.dirty(value);
-    state = state.copyWith(
-        email: newEmail, isValid: Formz.validate([newEmail, state.password]));
+    state = state.copyWith(email: newEmail, isValid: Formz.validate([newEmail, state.password]));
   }
 
   onPasswordChanged(String value) {
     final newPassword = Password.dirty(value);
     state = state.copyWith(
-        password: newPassword,
-        isValid: Formz.validate([newPassword, state.email]));
+      password: newPassword,
+      isValid: Formz.validate([newPassword, state.email]),
+    );
   }
 
   onFormSubmit() {
@@ -84,7 +84,6 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
 }
 
 //! 3 - StateNotifierProvider - Consume afuera
-final loginFormProvider =
-    StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>((ref) {
+final loginFormProvider = StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>((ref) {
   return LoginFormNotifier();
 });

@@ -1,4 +1,4 @@
-import 'package:dzero/config/themes/colors_theme.dart';
+import 'package:dzero/config/config.dart';
 import 'package:flutter/material.dart';
 
 class VPerfilScreen extends StatelessWidget {
@@ -62,23 +62,9 @@ class VPerfilScreen extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     height: size.height * 0.28,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(50),
-                        topRight: Radius.circular(50),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
-                        ),
-                      ],
-                    ),
+                    decoration: decoration,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
                       child: Column(
                         children: const [
                           _DatosWidget(

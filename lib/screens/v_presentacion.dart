@@ -1,10 +1,9 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:dzero/config/themes/colors_theme.dart';
+import 'package:dzero/config/config.dart';
 import 'package:dzero/screens/screens.dart';
 import 'package:dzero/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class VPresentacionScreen extends ConsumerStatefulWidget {
   static const String name = 'presentacion_screen';
@@ -63,7 +62,7 @@ class VPresentacionScreenState extends ConsumerState<VPresentacionScreen>
                     right: 20,
                     child: FloatingActionButton.extended(
                       onPressed: () {
-                        context.goNamed(VHomeScreen.name);
+                        ref.read(routesProvider).goNamed(VHomeScreen.name);
                       },
                       label: const Text('Comenzar'),
                     ),

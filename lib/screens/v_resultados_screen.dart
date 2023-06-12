@@ -1,5 +1,4 @@
-import 'package:awesome_circular_chart/awesome_circular_chart.dart';
-import 'package:dzero/config/themes/colors_theme.dart';
+import 'package:dzero/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class VResultadosScreen extends StatelessWidget {
@@ -16,10 +15,10 @@ class VResultadosScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: double.infinity,
                 height: 350,
-                child: _GraficoCircular(),
+                child: GraficoCircular(),
               ),
               const SizedBox(height: 20),
               GridView.count(
@@ -32,37 +31,31 @@ class VResultadosScreen extends StatelessWidget {
                 children: const [
                   _CardDetalle(
                     tipo: 'RCD',
-                    porcentaje: '',
                     icono: 'assets/icons/rcd.png',
                     color: Color(0xFF1f2858),
                   ),
                   _CardDetalle(
                     tipo: 'Plastico',
-                    porcentaje: '',
                     icono: 'assets/icons/plastico.png',
                     color: Colors.blue,
                   ),
                   _CardDetalle(
                     tipo: 'Metal',
-                    porcentaje: '',
                     icono: 'assets/icons/metal.png',
                     color: Color(0xFF515151),
                   ),
                   _CardDetalle(
                     tipo: 'Papel',
-                    porcentaje: '',
                     icono: 'assets/icons/papel.png',
                     color: Color(0xFF262626),
                   ),
                   _CardDetalle(
                     tipo: 'Madera',
-                    porcentaje: '',
                     icono: 'assets/icons/madera.png',
                     color: Color(0xFF66452e),
                   ),
                   _CardDetalle(
                     tipo: 'Carton',
-                    porcentaje: '',
                     icono: 'assets/icons/carton.png',
                     color: Color(0xFF66452e),
                   ),
@@ -76,49 +69,13 @@ class VResultadosScreen extends StatelessWidget {
   }
 }
 
-class _GraficoCircular extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final GlobalKey<AnimatedCircularChartState> chartKey =
-        GlobalKey<AnimatedCircularChartState>();
-    return AnimatedCircularChart(
-      key: chartKey,
-      size: const Size(300, 300),
-      startAngle: 90,
-      initialChartData: const <CircularStackEntry>[
-        CircularStackEntry(
-          <CircularSegmentEntry>[
-            CircularSegmentEntry(
-              90,
-              colorTerceary,
-              rankKey: 'completed',
-            ),
-          ],
-          rankKey: 'progress',
-        ),
-      ],
-      chartType: CircularChartType.Radial,
-      edgeStyle: SegmentEdgeStyle.round,
-      percentageValues: true,
-      holeLabel: '90',
-      labelStyle: const TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-        fontSize: 90.0,
-      ),
-    );
-  }
-}
-
 class _CardDetalle extends StatelessWidget {
   final String tipo;
-  final String porcentaje;
   final String icono;
   final Color color;
 
   const _CardDetalle({
     required this.tipo,
-    required this.porcentaje,
     required this.icono,
     required this.color,
   });

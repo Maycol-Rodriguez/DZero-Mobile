@@ -1,5 +1,4 @@
-import 'package:dzero/config/mappers/data_mapper_location.dart';
-import 'package:dzero/config/themes/colors_theme.dart';
+import 'package:dzero/config/config.dart';
 import 'package:dzero/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

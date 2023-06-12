@@ -1,4 +1,4 @@
-import 'package:dzero/config/themes/colors_theme.dart';
+import 'package:dzero/config/config.dart';
 import 'package:flutter/material.dart';
 
 class IconWidget extends StatelessWidget {

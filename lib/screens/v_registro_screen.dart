@@ -1,5 +1,4 @@
-import 'package:dzero/config/routes/app_router.dart';
-import 'package:dzero/config/themes/colors_theme.dart';
+import 'package:dzero/config/config.dart';
 import 'package:dzero/screens/screens.dart';
 import 'package:dzero/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +10,8 @@ class VRegistroScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    final size = MediaQuery.of(context).size;
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -94,9 +93,7 @@ class _RegisterForm extends ConsumerWidget {
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
               ),
               TextButton(
-                onPressed: () => ref
-                    .read(routesProvider)
-                    .pushReplacementNamed(VLoginScreen.name),
+                onPressed: () => ref.read(routesProvider).pushReplacementNamed(VLoginScreen.name),
                 child: const Text(
                   'Inicie Sesión',
                   style: TextStyle(color: colorTerceary),
