@@ -4,16 +4,14 @@ import 'package:flutter/material.dart';
 class AppTheme {
   ThemeData theme() {
     return ThemeData(
+      iconTheme: const IconThemeData(
+        color: Colors.white,
+      ),
       textTheme: const TextTheme(
         titleSmall: TextStyle(
           color: Colors.white,
           fontSize: 14,
           fontWeight: FontWeight.w300,
-        ),
-        titleMedium: TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
         ),
         titleLarge: TextStyle(
           color: Colors.white,
@@ -22,17 +20,17 @@ class AppTheme {
         ),
         bodySmall: TextStyle(
           color: Colors.white,
-          fontSize: 14,
-          fontWeight: FontWeight.w300,
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
         ),
         bodyMedium: TextStyle(
           color: Colors.white,
           fontSize: 18,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.normal,
         ),
         bodyLarge: TextStyle(
-          color: Colors.white,
-          fontSize: 32,
+          color: Colors.black, //!
+          fontSize: 16,
           fontWeight: FontWeight.w300,
         ),
       ),

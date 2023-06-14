@@ -62,7 +62,7 @@ class VPerfilScreen extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     height: size.height * 0.28,
-                    decoration: decoration,
+                    decoration: CustomDecoration.decoration(true, false, true),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
                       child: Column(
@@ -79,17 +79,15 @@ class VPerfilScreen extends StatelessWidget {
                 ),
                 Positioned(
                   right: 20,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: colorTerceary,
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(30, 55),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                    ),
+                  top: 0,
+                  child: FloatingActionButton(
                     onPressed: () {},
-                    child: const Icon(Icons.edit, size: 25),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    backgroundColor: colorTerceary,
+                    foregroundColor: Colors.white,
+                    child: const Icon(Icons.edit),
                   ),
                 )
               ],

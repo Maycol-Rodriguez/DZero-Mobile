@@ -1,29 +1,26 @@
-import 'package:dzero/config/mappers/user.dart';
+import 'package:dzero/config/config.dart';
 
-class DataMapperLocation {
+class Reporte {
   String? description;
-  String? location;
+  String location;
   String? picture;
   User user;
   String id;
 
-  DataMapperLocation({
+  Reporte({
     this.description,
-    this.location,
+    required this.location,
     this.picture,
     required this.user,
     required this.id,
   });
 
-  factory DataMapperLocation.fromJson(Map<String, dynamic> json) =>
-      DataMapperLocation(
+  factory Reporte.fromJson(Map<String, dynamic> json) => Reporte(
         id: json["id"],
         description: json["description"],
         location: json["location"],
         picture: json["picture"],
-        user: json["user"] == null
-            ? User(email: '', name: '')
-            : User.fromJson(json["user"]),
+        user: json["user"] == null ? User(email: '', name: '', id: '') : User.fromJson(json["user"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -34,8 +31,8 @@ class DataMapperLocation {
         "user": user.toJson(),
       };
 
-  DataMapperLocation copy() {
-    return DataMapperLocation(
+  Reporte copyWith() {
+    return Reporte(
       id: id,
       description: description,
       location: location,

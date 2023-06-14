@@ -5,6 +5,7 @@ import 'package:dzero/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 class VLoginScreen extends StatelessWidget {
   static const String name = 'login_screen';
@@ -116,7 +117,7 @@ class _LoginForm extends ConsumerWidget {
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
             ),
             TextButton(
-              onPressed: () => ref.read(routesProvider).pushReplacementNamed(VRegistroScreen.name),
+              onPressed: () => context.pushReplacementNamed(VRegistroScreen.name),
               child: const Text(
                 'Registrese',
                 style: TextStyle(color: colorTerceary),

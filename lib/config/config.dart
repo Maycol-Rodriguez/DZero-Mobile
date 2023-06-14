@@ -1,5 +1,5 @@
 export 'constants/environment.dart';
-export 'mappers/data_mapper_location.dart';
+export 'mappers/type_reportes.dart';
 export 'mappers/inputs/email.dart';
 export 'mappers/inputs/password.dart';
 export 'mappers/login_user.dart';
@@ -10,4 +10,6 @@ export 'services/cloudinary_service.dart';
 export 'services/firebase_options.dart';
 export 'themes/app_theme.dart';
 export 'themes/colors_theme.dart';
-export 'themes/design/box_decoration.dart';
+export 'themes/design/custom_border.dart';
+export 'themes/design/custom_box_decoration.dart';
+export 'themes/design/custom_input_decoration.dart';

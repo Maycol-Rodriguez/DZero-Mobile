@@ -3,6 +3,7 @@ import 'package:dzero/screens/screens.dart';
 import 'package:dzero/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class VRegistroScreen extends StatelessWidget {
   static const String name = 'registro_screen';
@@ -93,7 +94,7 @@ class _RegisterForm extends ConsumerWidget {
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
               ),
               TextButton(
-                onPressed: () => ref.read(routesProvider).pushReplacementNamed(VLoginScreen.name),
+                onPressed: () => context.pushReplacementNamed(VLoginScreen.name),
                 child: const Text(
                   'Inicie Sesión',
                   style: TextStyle(color: colorTerceary),

@@ -1,6 +1,4 @@
-import 'package:dzero/config/routes/app_router.dart';
-import 'package:dzero/config/services/firebase_options.dart';
-import 'package:dzero/config/themes/app_theme.dart';
+import 'package:dzero/config/config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +24,6 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final routes = ref.watch(routesProvider);
     return AnnotatedRegion(
       value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -34,7 +31,7 @@ class MyApp extends ConsumerWidget {
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'dzero App',
-        routerConfig: routes,
+        routerConfig: rutas,
         theme: AppTheme().theme(),
       ),
     );

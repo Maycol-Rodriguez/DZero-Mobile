@@ -26,6 +26,7 @@ dependencies:
   animate_do: ^3.0.2
   formz: ^0.6.0
   uuid: ^3.0.7
+  url_launcher: ^6.1.11
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
@@ -44,5 +45,5 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
-    - assets/presets/
+    - assets/loaders/
     - .env

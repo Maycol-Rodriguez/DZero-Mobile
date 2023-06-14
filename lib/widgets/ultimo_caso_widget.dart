@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:dzero/config/config.dart';
+import 'package:flutter/material.dart';
 
 class UltimoCasoWidget extends StatelessWidget {
-  final DataMapperLocation ultimoReporte;
+  final Reporte ultimoReporte;
 
   const UltimoCasoWidget({
     super.key,

@@ -5,6 +5,7 @@ export 'icons_widget.dart';
 export 'inputs/custom_filled_button.dart';
 export 'inputs/custom_text_form_field.dart';
 export 'item_drawer_widget.dart';
+export 'reporte_image_widget.dart';
 export 'titulo_separador_widget.dart';
 export 'tutorial_widget.dart';
 export 'ultimo_caso_widget.dart';

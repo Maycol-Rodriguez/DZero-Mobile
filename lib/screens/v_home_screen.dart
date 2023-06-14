@@ -4,6 +4,7 @@ import 'package:dzero/screens/screens.dart';
 import 'package:dzero/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class VHomeScreen extends ConsumerWidget {
   static const String name = 'home_screen';
@@ -12,30 +13,26 @@ class VHomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     GlobalKey<ScaffoldState> drawerKey = GlobalKey<ScaffoldState>();
-
     final data = ref.watch(obtenerReportesProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: null,
-      ),
+      appBar: AppBar(),
       key: drawerKey,
       drawer: DrawerWidget(drawerKey),
       body: SafeArea(
         child: data.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, _) => Center(child: Text('Error: $error')),
           data: (value) {
             return Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ContainerDetails(value.length, value.length),
-                ContainerSummary(data, value.reversed.toList()),
+                ContainerSummary(data, value),
               ],
             );
           },
-          error: (error, __) => Center(child: Text('Error: $error')),
-          loading: () => const Center(child: CircularProgressIndicator()),
         ),
       ),
     );
@@ -75,12 +72,12 @@ class ContainerDetails extends StatelessWidget {
 }
 
 class ContainerSummary extends ConsumerWidget {
-  final AsyncValue<List<DataMapperLocation>> data;
-  final List<DataMapperLocation> dataList;
+  final AsyncValue<List<Reporte>> asyncReporte;
+  final List<Reporte> reportes;
 
   const ContainerSummary(
-    this.data,
-    this.dataList, {
+    this.asyncReporte,
+    this.reportes, {
     super.key,
   });
 
@@ -99,27 +96,44 @@ class ContainerSummary extends ConsumerWidget {
           Positioned(
             width: size.width,
             bottom: 0,
-            child: Container(
-              width: double.infinity,
-              height: size.height * 0.28,
-              decoration: decoration,
-              child: data.when(
-                data: (value) {
-                  final ultimoReporte = dataList[0];
-                  return Padding(
-                    padding: const EdgeInsets.all(30),
-                    child: GestureDetector(
-                      onTap: () => ref.read(routesProvider).pushNamed(VResultadosScreen.name),
-                      child: UltimoCasoWidget(ultimoReporte: ultimoReporte),
-                    ),
-                  );
-                },
-                error: (error, __) => Center(child: Text('Error: $error')),
-                loading: () => const Center(child: CircularProgressIndicator()),
+            child: GestureDetector(
+              onTap: () => context.push('/reporte-detalle/${reportes[0].id}'),
+              child: Container(
+                width: double.infinity,
+                height: size.height * 0.28,
+                decoration: CustomDecoration.decoration(true,false,true),
+                child: asyncReporte.when(
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (error, _) => Center(child: Text('Error: $error')),
+                  data: (value) {
+                    return Padding(
+                      padding: const EdgeInsets.all(30),
+                      child: UltimoCasoWidget(ultimoReporte: reportes[0]),
+                    );
+                  },
+                ),
               ),
             ),
           ),
-          Positioned(right: 20, top: 0, child: CameraWidget(size: size))
+          Positioned(
+            right: 20,
+            top: 0,
+            child: FloatingActionButton(
+              onPressed: () => context.pushNamed(GenerarReporteScreen.name),
+              backgroundColor: colorTerceary,
+              heroTag: 1,
+              elevation: 0,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
+                ),
+              ),
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ],
       ),
     );

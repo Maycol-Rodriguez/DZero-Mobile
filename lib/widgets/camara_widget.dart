@@ -2,8 +2,10 @@ import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:dzero/config/config.dart';
 import 'package:dzero/models/models.dart';
 import 'package:dzero/screens/screens.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
@@ -20,9 +22,10 @@ class CameraWidget extends ConsumerStatefulWidget {
 }
 
 class CameraWidgetState extends ConsumerState<CameraWidget> {
+  final db = FirebaseDatabase.instance.ref();
   @override
   Widget build(BuildContext context) {
-    DataMapperLocation datos;
+    Reporte datos;
     const uuid = Uuid();
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -48,14 +51,19 @@ class CameraWidgetState extends ConsumerState<CameraWidget> {
             ),
           );
 
-          datos = DataMapperLocation(
-            id: uuid.v4(),
-            location: 'Locacion de Muestra.',
-            description: 'Descripcion de Muestra.',
+          datos = Reporte(
+            id: '',
             picture: response.secureUrl,
-            user: User(email: 'user.email@gmail.com', name: 'usuario.name'),
+            description: 'descripcion de prueba',
+            location: '-12.04807041556919, -75.18945304764888',
+            user: User(
+              id: uuid.v1(),
+              email: 'email@prueba.com',
+              name: 'usuario de prueba',
+            ),
           );
-          ref.read(routesProvider).pushNamed(VResultadosScreen.name);
+
+          context.pushNamed(VResultadosScreen.name);
           ref.read(subirReportesProvider(datos));
           ref.invalidate(obtenerReportesProvider);
         } on CloudinaryException catch (e) {

@@ -19,23 +19,50 @@ class UserCaseWidget extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: _RegisteredCase(
-            FontAwesomeIcons.addressBook,
-            '$ultimosCasos',
-            'Tus Casos',
-            colorSecondary,
+          child: Stack(
+            children: [
+              _RegisteredCase(
+                FontAwesomeIcons.addressBook,
+                '$ultimosCasos',
+                'Tus Casos',
+                colorSecondary,
+              ),
+              Positioned.fill(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => context.pushNamed(VCasosScreen.name),
+                    overlayColor: MaterialStateProperty.all(Colors.white.withOpacity(0.2)),
+                    splashFactory: InkRipple.splashFactory,
+                    borderRadius: CustomBorder.radiusAll,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(width: 20),
         Expanded(
-          child: GestureDetector(
-            onTap: () => context.pushNamed(VDemoDataScreen.name),
-            child: _RegisteredCase(
-              FontAwesomeIcons.solidMap,
-              '$ultimosCasos',
-              'Ultimos casos',
-              colorTerceary,
-            ),
+          child: Stack(
+            children: [
+              _RegisteredCase(
+                FontAwesomeIcons.solidMap,
+                '$ultimosCasos',
+                'Ultimos casos',
+                colorTerceary,
+              ),
+              Positioned.fill(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => context.pushNamed(VCasosScreen.name),
+                    overlayColor: MaterialStateProperty.all(Colors.white.withOpacity(0.2)),
+                    splashFactory: InkRipple.splashFactory,
+                    borderRadius: CustomBorder.radiusAll,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],
