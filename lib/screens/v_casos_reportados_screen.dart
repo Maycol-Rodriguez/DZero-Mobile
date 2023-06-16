@@ -4,32 +4,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class VCasosScreen extends ConsumerWidget {
+class CasosReportadosScreen extends ConsumerWidget {
   static const String name = 'casos-screen';
 
-  const VCasosScreen({
+  const CasosReportadosScreen({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final data = ref.watch(obtenerReportesProvider);
+    final respuestaAsync = ref.watch(obtenerReportesProvider);
 
     return Scaffold(
       appBar: AppBar(),
-      body: data.when(
+      body: respuestaAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, _) => Center(child: Text('Error: $error')),
-        data: (value) {
+        data: (reportes) {
           return ListView.builder(
-            itemCount: value.length,
+            itemCount: reportes.length,
             itemBuilder: (context, int index) {
               return Column(
                 children: [
                   Container(
                     width: double.infinity,
                     margin: const EdgeInsets.all(20),
-                    child: _DataContainer(value.reversed.toList()[index]),
+                    child: _DataContainer(reportes.reversed.toList()[index]),
                   ),
                 ],
               );
@@ -47,15 +47,12 @@ class _DataContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.bodySmall;
+    final textStyle = Theme.of(context).textTheme.titleSmall;
 
     return Stack(
       children: [
         Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: colorSecondary,
-          ),
+          decoration: CustomDecoration.decoration(false, true, false, true),
           child: Column(
             children: [
               ClipRRect(

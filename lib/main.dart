@@ -32,7 +32,7 @@ class MyApp extends ConsumerWidget {
         debugShowCheckedModeBanner: false,
         title: 'dzero App',
         routerConfig: rutas,
-        theme: AppTheme().theme(),
+        theme: AppTheme.theme(),
       ),
     );
   }

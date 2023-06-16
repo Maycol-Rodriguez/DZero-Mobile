@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class UserDetailsWidget extends StatelessWidget {
-  const UserDetailsWidget({Key? key}) : super(key: key);
+class DetallesDeUsuariosWidget extends StatelessWidget {
+  const DetallesDeUsuariosWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,6 @@ class UserDetailsWidget extends StatelessWidget {
         children: [
           Text(
             'Miguel\nPerez',
-            
             style: titleLarge,
           ),
           const CircleAvatar(

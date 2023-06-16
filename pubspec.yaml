@@ -27,6 +27,7 @@ dependencies:
   formz: ^0.6.0
   uuid: ^3.0.7
   url_launcher: ^6.1.11
+  google_fonts: ^4.0.4
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1

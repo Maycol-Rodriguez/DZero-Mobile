@@ -1,7 +1,8 @@
 export 'camara_widget.dart';
+export 'contenedor_casos.dart';
+export 'detalles_de_usuarios_widget.dart';
 export 'drawer_widget.dart';
 export 'grafico_circular_widget.dart';
-export 'icons_widget.dart';
 export 'inputs/custom_filled_button.dart';
 export 'inputs/custom_text_form_field.dart';
 export 'item_drawer_widget.dart';
@@ -9,5 +10,3 @@ export 'reporte_image_widget.dart';
 export 'titulo_separador_widget.dart';
 export 'tutorial_widget.dart';
 export 'ultimo_caso_widget.dart';
-export 'user_case_widget.dart';
-export 'user_details_widget.dart';

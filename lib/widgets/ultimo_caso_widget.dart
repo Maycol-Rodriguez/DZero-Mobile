@@ -17,15 +17,14 @@ class UltimoCasoWidget extends StatelessWidget {
         const CircleAvatar(
           backgroundColor: colorTerceary,
           child: Icon(
-            Icons.location_on,
+            Icons.location_on_outlined,
             color: Colors.white,
-            size: 32,
+            size: 30,
           ),
         ),
-        const SizedBox(height: 15),
+        const SizedBox(height: 10),
         const Text(
           'Ultimo Caso Reportado',
-          style: TextStyle(color: Colors.black),
         ),
         const SizedBox(height: 15),
         Text(
@@ -35,10 +34,6 @@ class UltimoCasoWidget extends StatelessWidget {
         const SizedBox(height: 5),
         Text(
           ultimoReporte.description ?? 'descripcion',
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
-          ),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),

@@ -10,56 +10,50 @@ class ReporteDetalleScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final detalle = ref.watch(obtenerReporteIdProvider(reporteId));
+    final respuestaAsync = ref.watch(obtenerReporteIdProvider(reporteId));
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text(
-          'Reporte',
-          style: TextStyle(fontSize: 30),
+      appBar: AppBar(),
+      body: Center(
+        child: respuestaAsync.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, _) => Text('Error: $error'),
+          data: (reporte) {
+            return SingleChildScrollView(
+              physics: const ScrollPhysics(),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+                    decoration: CustomDecoration.decoration(false, true),
+                    child: Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius: CustomBorder.radiusTop,
+                          child: FadeInImage(
+                            placeholder: const AssetImage('assets/loaders/bottle-loader.gif'),
+                            image: NetworkImage(reporte.picture!),
+                            height: 380,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          decoration: CustomDecoration.decoration(false, false, false, true),
+                          padding: const EdgeInsets.all(10),
+                          child: _UsuarioDetalle(reporte),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
         ),
-      ),
-      body: detalle.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Text('Error: $error'),
-        data: (reporte) {
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: CustomDecoration.decoration(false, true),
-                  child: Column(
-                    children: [
-                      ClipRRect(
-                        borderRadius: CustomBorder.radiusTop,
-                        child: FadeInImage(
-                          placeholder: const AssetImage('assets/loaders/bottle-loader.gif'),
-                          image: NetworkImage(reporte.picture!),
-                          height: 380,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Container(
-                        decoration: const BoxDecoration(
-                          borderRadius: CustomBorder.radiusBottom,
-                          color: colorSecondary,
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: _UsuarioDetalle(reporte),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          );
-        },
       ),
     );
   }
@@ -96,7 +90,7 @@ class DatosReporte extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.bodySmall;
+    final textStyle = Theme.of(context).textTheme.titleSmall;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -114,7 +108,7 @@ class DatosReporte extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Text(data, textAlign: TextAlign.justify, style: textStyle),
         ),
-        const SizedBox(height: 15)
+        const SizedBox(height: 20)
       ],
     );
   }
@@ -129,6 +123,7 @@ class DatosReporteUbicacion extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final textStyle = Theme.of(context).textTheme.titleSmall;
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -142,17 +137,15 @@ class DatosReporteUbicacion extends ConsumerWidget {
           child: Column(
             children: [
               Row(
-                children: const [
-                  Icon(Icons.location_on_outlined),
-                  SizedBox(width: 3),
+                children: [
+                  const Icon(Icons.location_on_outlined),
+                  const SizedBox(width: 3),
                   Text(
                     'Ubicacion:',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: textStyle!.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  Spacer(),
-                  Icon(Icons.open_in_new_rounded)
+                  const Spacer(),
+                  const Icon(Icons.open_in_new_rounded)
                 ],
               ),
             ],

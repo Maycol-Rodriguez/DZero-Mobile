@@ -41,8 +41,8 @@ final rutas = GoRouter(
     ),
     GoRoute(
       path: '/casos',
-      name: VCasosScreen.name,
-      builder: (context, state) => const VCasosScreen(),
+      name: CasosReportadosScreen.name,
+      builder: (context, state) => const CasosReportadosScreen(),
     ),
     GoRoute(
       path: '/reporte-detalle/:id',

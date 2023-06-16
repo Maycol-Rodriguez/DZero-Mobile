@@ -9,6 +9,7 @@ class VPerfilScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final textStyle = Theme.of(context).textTheme.titleSmall;
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -22,29 +23,19 @@ class VPerfilScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
-                children: const [
-                  CircleAvatar(
+                children: [
+                  const CircleAvatar(
                     radius: 100,
                     backgroundImage: AssetImage('assets/images/avatar.png'),
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'Miguel Perez',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Agente ID: RS-123456',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 10),
+                  Text('Agente ID: RS-123456', textAlign: TextAlign.center, style: textStyle),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -82,11 +73,6 @@ class VPerfilScreen extends StatelessWidget {
                   top: 0,
                   child: FloatingActionButton(
                     onPressed: () {},
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    backgroundColor: colorTerceary,
-                    foregroundColor: Colors.white,
                     child: const Icon(Icons.edit),
                   ),
                 )
@@ -114,53 +100,36 @@ class _DatosWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            Image.asset('assets/icons/lista.png', width: 20),
-            const SizedBox(width: 15),
-            Text(
-              email,
-              style: const TextStyle(
-                fontSize: 20,
-                color: Colors.black,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-          ],
+        _DatosPersonales(dato: email),
+        const SizedBox(height: 12),
+        _DatosPersonales(dato: celular ?? 'No añadio un numero celular'),
+        const SizedBox(height: 12),
+        _DatosPersonales(dato: direccion ?? 'No añadio una dirección'),
+      ],
+    );
+  }
+}
+
+class _DatosPersonales extends StatelessWidget {
+  final String dato;
+  const _DatosPersonales({
+    required this.dato,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Image.asset('assets/icons/lista.png', width: 20),
+        const SizedBox(width: 15),
+        Text(
+          dato,
+          style: const TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+            fontWeight: FontWeight.normal,
+          ),
         ),
-        const SizedBox(height: 12),
-        if (celular != null)
-          Row(
-            children: [
-              Image.asset('assets/icons/lista.png', width: 20),
-              const SizedBox(width: 15),
-              Text(
-                celular!,
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ],
-          ),
-        const SizedBox(height: 12),
-        if (direccion != null)
-          Row(
-            children: [
-              Image.asset('assets/icons/lista.png', width: 20),
-              const SizedBox(width: 15),
-              Text(
-                direccion!,
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal,
-                ),
-                maxLines: 1,
-              ),
-            ],
-          ),
       ],
     );
   }

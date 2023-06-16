@@ -1,56 +1,54 @@
-import 'package:dzero/config/themes/colors_theme.dart';
+import 'package:dzero/config/config.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  ThemeData theme() {
+  static ThemeData theme() {
     return ThemeData(
-      iconTheme: const IconThemeData(
-        color: Colors.white,
-      ),
-      textTheme: const TextTheme(
-        titleSmall: TextStyle(
-          color: Colors.white,
-          fontSize: 14,
-          fontWeight: FontWeight.w300,
-        ),
-        titleLarge: TextStyle(
-          color: Colors.white,
-          fontSize: 32,
-          fontWeight: FontWeight.bold,
-        ),
-        bodySmall: TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-        ),
-        bodyMedium: TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-          fontWeight: FontWeight.normal,
-        ),
-        bodyLarge: TextStyle(
-          color: Colors.black, //!
-          fontSize: 16,
-          fontWeight: FontWeight.w300,
-        ),
-      ),
       useMaterial3: true,
       brightness: Brightness.light,
       colorSchemeSeed: const Color(0xff1f2858),
       scaffoldBackgroundColor: colorPrimary,
-      appBarTheme: const AppBarTheme(
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: colorTerceary,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20),
+          ),
+        ),
+        iconSize: 25,
+        sizeConstraints: BoxConstraints.tightFor(
+          width: 50,
+          height: 50,
+        ),
+      ),
+      textTheme: TextTheme(
+        titleSmall: GoogleFonts.montserratAlternates(color: Colors.white),
+        titleMedium: GoogleFonts.montserratAlternates(fontSize: 20),
+        titleLarge: GoogleFonts.montserratAlternates(fontSize: 35, color: Colors.white),
+        bodySmall: GoogleFonts.montserratAlternates(fontSize: 15),
+        bodyMedium: GoogleFonts.montserratAlternates(fontSize: 20),
+        bodyLarge: GoogleFonts.montserratAlternates(fontSize: 25),
+      ),
+      appBarTheme: AppBarTheme(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Color(0xff1f2858),
+        backgroundColor: const Color(0xff1f2858),
         foregroundColor: Colors.white,
-        titleTextStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-        iconTheme: IconThemeData(
+        titleTextStyle: GoogleFonts.montserratAlternates(fontSize: 25, color: Colors.white),
+        iconTheme: const IconThemeData(
           color: Colors.white,
         ),
+      ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: colorPrimary,
+        selectedItemColor: colorTerceary,
+        unselectedItemColor: Colors.white,
+      ),
+      iconTheme: const IconThemeData(
+        color: Colors.white,
       ),
     );
   }

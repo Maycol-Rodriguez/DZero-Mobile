@@ -28,8 +28,8 @@ class VHomeScreen extends ConsumerWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ContainerDetails(value.length, value.length),
-                ContainerSummary(data, value),
+                ContenedorHeader(value.length, value.length),
+                ContenedorFooter(data, value),
               ],
             );
           },
@@ -39,10 +39,10 @@ class VHomeScreen extends ConsumerWidget {
   }
 }
 
-class ContainerDetails extends StatelessWidget {
+class ContenedorHeader extends StatelessWidget {
   final int misCasos;
   final int ultimosCasos;
-  const ContainerDetails(
+  const ContenedorHeader(
     this.misCasos,
     this.ultimosCasos, {
     super.key,
@@ -60,10 +60,10 @@ class ContainerDetails extends StatelessWidget {
           children: <Widget>[
             const SizedBox(height: 5),
             const Separator('Bienvenido'),
-            const UserDetailsWidget(),
+            const DetallesDeUsuariosWidget(),
             const SizedBox(height: 20),
             const Separator('Tus casos'),
-            Expanded(child: UserCaseWidget(misCasos, ultimosCasos))
+            Expanded(child: CasosDeUsuariosWidget(misCasos, ultimosCasos))
           ],
         ),
       ),
@@ -71,11 +71,11 @@ class ContainerDetails extends StatelessWidget {
   }
 }
 
-class ContainerSummary extends ConsumerWidget {
+class ContenedorFooter extends ConsumerWidget {
   final AsyncValue<List<Reporte>> asyncReporte;
   final List<Reporte> reportes;
 
-  const ContainerSummary(
+  const ContenedorFooter(
     this.asyncReporte,
     this.reportes, {
     super.key,
@@ -101,13 +101,13 @@ class ContainerSummary extends ConsumerWidget {
               child: Container(
                 width: double.infinity,
                 height: size.height * 0.28,
-                decoration: CustomDecoration.decoration(true,false,true),
+                decoration: CustomDecoration.decoration(true, false, true),
                 child: asyncReporte.when(
                   loading: () => const Center(child: CircularProgressIndicator()),
                   error: (error, _) => Center(child: Text('Error: $error')),
                   data: (value) {
                     return Padding(
-                      padding: const EdgeInsets.all(30),
+                      padding: const EdgeInsets.all(25),
                       child: UltimoCasoWidget(ultimoReporte: reportes[0]),
                     );
                   },
@@ -120,17 +120,9 @@ class ContainerSummary extends ConsumerWidget {
             top: 0,
             child: FloatingActionButton(
               onPressed: () => context.pushNamed(GenerarReporteScreen.name),
-              backgroundColor: colorTerceary,
               heroTag: 1,
-              elevation: 0,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20),
-                ),
-              ),
               child: const Icon(
                 Icons.add,
-                color: Colors.white,
               ),
             ),
           ),

@@ -1,4 +1,4 @@
-export 'v_casos_screen.dart';
+export 'v_casos_reportados_screen.dart';
 export 'v_estadisticas_screen.dart';
 export 'v_generar_reporte_screen.dart';
 export 'v_home_screen.dart';

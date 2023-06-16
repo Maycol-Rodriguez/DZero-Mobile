@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
-class UserCaseWidget extends StatelessWidget {
+class CasosDeUsuariosWidget extends StatelessWidget {
   final int misCasos;
   final int ultimosCasos;
 
-  const UserCaseWidget(
+  const CasosDeUsuariosWidget(
     this.misCasos,
     this.ultimosCasos, {
     Key? key,
@@ -21,7 +21,7 @@ class UserCaseWidget extends StatelessWidget {
         Expanded(
           child: Stack(
             children: [
-              _RegisteredCase(
+              _CasosRegistrados(
                 FontAwesomeIcons.addressBook,
                 '$ultimosCasos',
                 'Tus Casos',
@@ -31,7 +31,7 @@ class UserCaseWidget extends StatelessWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () => context.pushNamed(VCasosScreen.name),
+                    onTap: () => context.pushNamed(CasosReportadosScreen.name),
                     overlayColor: MaterialStateProperty.all(Colors.white.withOpacity(0.2)),
                     splashFactory: InkRipple.splashFactory,
                     borderRadius: CustomBorder.radiusAll,
@@ -45,7 +45,7 @@ class UserCaseWidget extends StatelessWidget {
         Expanded(
           child: Stack(
             children: [
-              _RegisteredCase(
+              _CasosRegistrados(
                 FontAwesomeIcons.solidMap,
                 '$ultimosCasos',
                 'Ultimos casos',
@@ -55,7 +55,7 @@ class UserCaseWidget extends StatelessWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () => context.pushNamed(VCasosScreen.name),
+                    onTap: () => context.pushNamed(CasosReportadosScreen.name),
                     overlayColor: MaterialStateProperty.all(Colors.white.withOpacity(0.2)),
                     splashFactory: InkRipple.splashFactory,
                     borderRadius: CustomBorder.radiusAll,
@@ -70,32 +70,32 @@ class UserCaseWidget extends StatelessWidget {
   }
 }
 
-class _RegisteredCase extends StatelessWidget {
+class _CasosRegistrados extends StatelessWidget {
   final IconData icon;
-  final String title;
-  final String subtitle;
+  final String nroDeCasos;
+  final String titulo;
   final Color color;
 
-  const _RegisteredCase(this.icon, this.title, this.subtitle, this.color);
+  const _CasosRegistrados(this.icon, this.nroDeCasos, this.titulo, this.color);
 
   @override
   Widget build(BuildContext context) {
-    return _ContainerDetail(
+    return _InformacionDelCaso(
       icon: icon,
-      title: title,
-      subtitle: subtitle,
+      title: nroDeCasos,
+      subtitle: titulo,
       color: color,
     );
   }
 }
 
-class _ContainerDetail extends StatelessWidget {
+class _InformacionDelCaso extends StatelessWidget {
   final Color color;
   final IconData icon;
   final String title;
   final String subtitle;
 
-  const _ContainerDetail({
+  const _InformacionDelCaso({
     required this.icon,
     required this.title,
     required this.subtitle,
@@ -125,7 +125,7 @@ class _ContainerDetail extends StatelessWidget {
           Positioned(
             top: 20,
             right: 15,
-            child: FaIcon(icon, color: Colors.white),
+            child: FaIcon(icon),
           ),
           Positioned(
             bottom: 15,
@@ -133,14 +133,8 @@ class _ContainerDetail extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                Text(
-                  subtitle,
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
+                Text(title, style: Theme.of(context).textTheme.titleLarge),
+                Text(subtitle, style: Theme.of(context).textTheme.titleSmall),
               ],
             ),
           ),
