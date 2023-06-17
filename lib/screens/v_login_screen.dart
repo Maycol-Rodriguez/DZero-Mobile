@@ -114,13 +114,13 @@ class _LoginForm extends ConsumerWidget {
           children: [
             const Text(
               '¿Aun no tienes cuenta en DZero?',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Colors.white),
             ),
             TextButton(
               onPressed: () => context.pushReplacementNamed(VRegistroScreen.name),
               child: const Text(
                 'Registrese',
-                style: TextStyle(color: colorTerceary),
+                style: TextStyle(color: colorTerceary, fontSize: 14),
               ),
             )
           ],

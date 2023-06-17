@@ -91,13 +91,13 @@ class _RegisterForm extends ConsumerWidget {
             children: [
               const Text(
                 '¿Ya tienes una cuenta en DZero?',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal, color: Colors.white),
               ),
               TextButton(
                 onPressed: () => context.pushReplacementNamed(VLoginScreen.name),
                 child: const Text(
                   'Inicie Sesión',
-                  style: TextStyle(color: colorTerceary),
+                  style: TextStyle(color: colorTerceary, fontSize: 12),
                 ),
               )
             ],

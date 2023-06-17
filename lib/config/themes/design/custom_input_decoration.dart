@@ -20,7 +20,7 @@ class InputDecorations {
       ),
       hintText: hintText,
       labelText: labelText,
-      labelStyle: const TextStyle(color: Colors.grey, fontSize: 20),
+      labelStyle: const TextStyle(color: Colors.grey, fontSize: 15),
       prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: colorSecondary) : null,
     );
   }

@@ -2,8 +2,15 @@ import 'package:dzero/config/config.dart';
 import 'package:flutter/material.dart';
 
 class CustomDecoration {
-  static BoxDecoration decoration(bool top, [bool allRadius = false, bool card = false, bool color = false]) {
+  static BoxDecoration decoration(
+    bool top, [
+    bool allRadius = false,
+    bool card = false,
+    bool color = false,
+    bool colorImage = false,
+  ]) {
     BorderRadius border;
+    Color colorS;
     if (top) {
       border = CustomBorder.radiusTop;
     } else {
@@ -16,8 +23,17 @@ class CustomDecoration {
       border = CustomBorder.radiusCard;
     }
 
+    if (color) {
+      colorS = colorSecondary;
+    } else {
+      colorS = Colors.white;
+    }
+    if (colorImage) {
+      colorS = Colors.black;
+    }
+
     return BoxDecoration(
-      color: color ? colorSecondary : Colors.white,
+      color: colorS,
       borderRadius: border,
       boxShadow: [
         BoxShadow(

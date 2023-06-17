@@ -19,7 +19,7 @@ class ServicioReportes {
   }
 
   Future<void> subirReportes(Reporte reporte) async {
-    final general = FirebaseDatabase.instance.ref().child('reportesprueba/general/reportes').push();
+    final general = FirebaseDatabase.instance.ref().child('reports').push();
     reporte.id = general.key!;
     await general.set(reporte.toJson());
 

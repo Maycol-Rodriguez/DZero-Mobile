@@ -1,3 +1,4 @@
+export 'seleccionar_imagen_screen.dart';
 export 'v_casos_reportados_screen.dart';
 export 'v_estadisticas_screen.dart';
 export 'v_generar_reporte_screen.dart';

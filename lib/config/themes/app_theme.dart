@@ -26,11 +26,25 @@ class AppTheme {
       ),
       textTheme: TextTheme(
         titleSmall: GoogleFonts.montserratAlternates(color: Colors.white),
-        titleMedium: GoogleFonts.montserratAlternates(fontSize: 20),
+        titleMedium: GoogleFonts.montserratAlternates(fontSize: 16),
         titleLarge: GoogleFonts.montserratAlternates(fontSize: 35, color: Colors.white),
         bodySmall: GoogleFonts.montserratAlternates(fontSize: 15),
         bodyMedium: GoogleFonts.montserratAlternates(fontSize: 20),
-        bodyLarge: GoogleFonts.montserratAlternates(fontSize: 25),
+        bodyLarge: GoogleFonts.montserratAlternates(fontSize: 16),
+        labelLarge: GoogleFonts.montserratAlternates(fontSize: 15, fontWeight: FontWeight.w500),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colorTerceary,
+          elevation: 0,
+          foregroundColor: Colors.white,
+          textStyle: GoogleFonts.montserratAlternates(fontSize: 16),
+          minimumSize: const Size(200, 50),
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
       ),
       appBarTheme: AppBarTheme(
         centerTitle: true,

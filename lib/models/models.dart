@@ -1,3 +1,4 @@
+export 'm_formulario_reporte_provider.dart';
 export 'm_launcher_provider.dart';
 export 'm_login.dart';
 export 'm_registro.dart';

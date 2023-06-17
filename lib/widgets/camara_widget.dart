@@ -37,12 +37,12 @@ class CameraWidgetState extends ConsumerState<CameraWidget> {
         ),
       ),
       onPressed: () async {
-        final picker = ImagePicker();
+        final picker = ImagePicker();//!
         final XFile? pickedFile = await picker.pickImage(
           source: ImageSource.camera,
           imageQuality: 30,
         );
-        if (pickedFile == null) return;
+        if (pickedFile == null) return;//!
         try {
           CloudinaryResponse response = await cloudinary.uploadFile(
             CloudinaryFile.fromFile(
