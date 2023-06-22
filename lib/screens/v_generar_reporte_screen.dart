@@ -23,6 +23,8 @@ class GenerarReporteScreen extends ConsumerStatefulWidget {
 class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
   File? _image;
   String? path;
+  String usuario = '';
+  String descripcion = '';
 
   Future _pickImage(ImageSource source) async {
     try {
@@ -75,35 +77,7 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
   @override
   Widget build(BuildContext context) {
     final formReporte = ref.watch(formularioReporteProvider);
-    Future<void> enviarDatos() async {
-      const uuid = Uuid();
-      Reporte reporte;
-
-      try {
-        CloudinaryResponse response = await cloudinary.uploadFile(
-          CloudinaryFile.fromFile(
-            path!,
-            resourceType: CloudinaryResourceType.Image,
-          ),
-        );
-
-        reporte = Reporte(
-          id: '',
-          picture: response.secureUrl,
-          description: 'descripcion',
-          location: '-12.04807041556919, -75.18945304764888',
-          user: User(
-            id: uuid.v1(),
-            email: 'email@prueba.com',
-            name: 'usuario de prueba',
-          ),
-        );
-
-        ref.watch(subirReportesProvider(reporte));
-      } on CloudinaryException catch (e) {
-        throw Text(e.message ?? '');
-      }
-    }
+    const uuid = Uuid();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -153,7 +127,59 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
                   ),
                 ],
               ),
-              const _FormularioReporte(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: CustomDecoration.decoration(false),
+                  child: Form(
+                    key: ref.watch(formularioReporteProvider).formKey,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          onChanged: (value) => usuario = value,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecorations.authInputDecoration(
+                            labelText: 'Nombre',
+                            hintText: 'Nombre del usuario',
+                            prefixIcon: Icons.person,
+                          ),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp('^[a-zA-Z.,]+')),
+                          ],
+                          validator: (value) {
+                            if (value!.isEmpty || value.length < 3) {
+                              return 'El nombre es obligatorio';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 30),
+                        TextFormField(
+                          maxLines: 3,
+                          minLines: 1,
+                          keyboardType: TextInputType.text,
+                          onChanged: (value) => descripcion = value,
+                          decoration: InputDecorations.authInputDecoration(
+                            labelText: 'Descripcion',
+                            hintText: 'Descripcion del reporte ',
+                            prefixIcon: Icons.description,
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty || value.length < 3) {
+                              return 'La descripcion es obligatoria';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 30),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(height: 100),
             ],
           ),
@@ -168,81 +194,37 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
         onPressed: () async {
           if (!formReporte.esValido()) return;
           formReporte.esValido();
-          await enviarDatos();
-          Future.delayed(
-            const Duration(milliseconds: 300),
-            () => context.pushReplacementNamed(VHomeScreen.name),
+          CloudinaryResponse response;
+          try {
+            response = await cloudinary.uploadFile(
+              CloudinaryFile.fromFile(
+                path!,
+                resourceType: CloudinaryResourceType.Image,
+              ),
+            );
+          } on CloudinaryException catch (e) {
+            throw (e.message!);
+          }
+
+          final reporte = Reporte(
+            id: '',
+            picture: response.secureUrl,
+            description: descripcion,
+            location: '-18.04807041556919, -95.18945304764888',
+            user: User(
+              id: uuid.v1(),
+              email: 'email@prueba.com',
+              name: usuario,
+            ),
           );
-          Future.delayed(
-            const Duration(milliseconds: 500),
-            () => ref.refresh(obtenerReportesProvider),
-          );
+
+          ref.read(subirReportesProvider(reporte));
+
+          Future.delayed(const Duration(milliseconds: 50), () {
+            ref.invalidate(obtenerReportesProvider);
+            context.pushReplacementNamed(VHomeScreen.name);
+          });
         },
-      ),
-    );
-  }
-}
-
-class _FormularioReporte extends ConsumerWidget {
-  const _FormularioReporte();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final textStyle = Theme.of(context).textTheme.titleSmall;
-    String usuario;
-    String descripcion;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        decoration: CustomDecoration.decoration(false),
-        child: Form(
-          key: ref.watch(formularioReporteProvider).formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              TextFormField(
-                onChanged: (value) => usuario = value,
-                keyboardType: TextInputType.text,
-                decoration: InputDecorations.authInputDecoration(
-                  labelText: 'Nombre',
-                  hintText: 'Nombre del usuario',
-                  prefixIcon: Icons.person,
-                ),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('^[a-zA-Z.,]+')),
-                ],
-                validator: (value) {
-                  if (value!.isEmpty || value.length < 3) {
-                    return 'La descripción es obligatoria';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 30),
-              TextFormField(
-                maxLines: 3,
-                minLines: 1,
-                keyboardType: TextInputType.text,
-                onChanged: (value) => descripcion = value,
-                decoration: InputDecorations.authInputDecoration(
-                  labelText: 'Descripcion',
-                  hintText: 'Descripcion del reporte ',
-                  prefixIcon: Icons.description,
-                ),
-                validator: (value) {
-                  if (value!.isEmpty || value.length < 3) {
-                    return 'El nombre es obligatorio';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 30),
-            ],
-          ),
-        ),
       ),
     );
   }

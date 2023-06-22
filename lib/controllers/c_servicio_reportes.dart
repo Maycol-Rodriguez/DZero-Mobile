@@ -1,3 +1,4 @@
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:dio/dio.dart';
 import 'package:dzero/config/config.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -22,7 +23,6 @@ class ServicioReportes {
     final general = FirebaseDatabase.instance.ref().child('reports').push();
     reporte.id = general.key!;
     await general.set(reporte.toJson());
-
     reportes.add(reporte);
   }
 
