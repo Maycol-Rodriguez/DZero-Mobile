@@ -4,6 +4,7 @@ import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:dzero/config/config.dart';
 import 'package:dzero/models/models.dart';
 import 'package:dzero/screens/screens.dart';
+import 'package:dzero/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -167,6 +168,7 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
 
                 Future.delayed(const Duration(milliseconds: 50), () {
                   context.pushReplacementNamed(VHomeScreen.name);
+                  mostrarSnackBar(context, 'Enviado satisfactoriamente');
                 });
               },
       ),

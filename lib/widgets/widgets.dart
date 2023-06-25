@@ -1,5 +1,6 @@
 export 'common_button_widget.dart';
 export 'contenedor_casos.dart';
+export 'custom_snackbar.dart';
 export 'detalles_de_usuarios_widget.dart';
 export 'drawer_widget.dart';
 export 'grafico_circular_widget.dart';
