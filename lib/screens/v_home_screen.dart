@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:dzero/config/config.dart';
 import 'package:dzero/models/models.dart';
 import 'package:dzero/screens/screens.dart';
@@ -108,7 +109,7 @@ class ContenedorFooter extends ConsumerWidget {
                   data: (value) {
                     return Padding(
                       padding: const EdgeInsets.all(25),
-                      child: UltimoCasoWidget(ultimoReporte: reportes[0]),
+                      child: FadeInUp(child: UltimoCasoWidget(ultimoReporte: reportes[0])),
                     );
                   },
                 ),
@@ -118,9 +119,12 @@ class ContenedorFooter extends ConsumerWidget {
           Positioned(
             right: 20,
             top: 0,
-            child: FloatingActionButton(
-              onPressed: () => context.pushNamed(GenerarReporteScreen.name),
-              child: const Icon(Icons.add),
+            child: FadeInDown(
+              from: 40,
+              child: FloatingActionButton(
+                onPressed: () => context.pushNamed(GenerarReporteScreen.name),
+                child: const Icon(Icons.add),
+              ),
             ),
           ),
         ],

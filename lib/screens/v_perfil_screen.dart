@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:dzero/config/config.dart';
 import 'package:flutter/material.dart';
 
@@ -24,9 +25,12 @@ class VPerfilScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  const CircleAvatar(
-                    radius: 100,
-                    backgroundImage: AssetImage('assets/images/avatar.png'),
+                  const Hero(
+                    tag: 2,
+                    child: CircleAvatar(
+                      radius: 100,
+                      backgroundImage: AssetImage('assets/images/avatar.png'),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   const Text(
@@ -57,11 +61,13 @@ class VPerfilScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
                       child: Column(
-                        children: const [
-                          _DatosWidget(
-                            email: 'Miguel354@gmail.com',
-                            celular: '998238145',
-                            direccion: 'Calle Santa Lucia 223',
+                        children: [
+                          FadeInUp(
+                            child: const _DatosWidget(
+                              email: 'Miguel354@gmail.com',
+                              celular: '998238145',
+                              direccion: 'Calle Santa Lucia 223',
+                            ),
                           ),
                         ],
                       ),
@@ -71,9 +77,12 @@ class VPerfilScreen extends StatelessWidget {
                 Positioned(
                   right: 20,
                   top: 0,
-                  child: FloatingActionButton(
-                    onPressed: () {},
-                    child: const Icon(Icons.edit),
+                  child: FadeInDown(
+                    from: 40,
+                    child: FloatingActionButton(
+                      onPressed: () {},
+                      child: const Icon(Icons.edit),
+                    ),
                   ),
                 )
               ],

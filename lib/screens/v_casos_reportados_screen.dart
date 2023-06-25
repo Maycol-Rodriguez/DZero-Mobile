@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:dzero/config/config.dart';
 import 'package:dzero/models/models.dart';
 import 'package:flutter/material.dart';
@@ -17,28 +18,30 @@ class CasosReportadosScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(),
-      body: respuestaAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(child: Text('Error: $error')),
-        data: (reportes) {
-          return RefreshIndicator(
-            onRefresh: () => ref.refresh(obtenerReportesProvider.future),
-            child: ListView.builder(
-              itemCount: reportes.length,
-              itemBuilder: (context, int index) {
-                return Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.all(20),
-                      child: _DataContainer(reportes[index]),
-                    ),
-                  ],
-                );
-              },
-            ),
-          );
-        },
+      body: FadeInUp(
+        child: respuestaAsync.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, _) => Center(child: Text('Error: $error')),
+          data: (reportes) {
+            return RefreshIndicator(
+              onRefresh: () => ref.refresh(obtenerReportesProvider.future),
+              child: ListView.builder(
+                itemCount: reportes.length,
+                itemBuilder: (context, int index) {
+                  return Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.all(20),
+                        child: _DataContainer(reportes[index]),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }

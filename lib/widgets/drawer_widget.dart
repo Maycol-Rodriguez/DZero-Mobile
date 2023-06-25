@@ -32,7 +32,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ),
         ...appMenuItem.sublist(0, 1).map(
               (item) => NavigationDrawerDestination(
-                icon: Icon(item.icon),
+                icon: Icon(item.icon, color: Colors.black),
                 label: Text(item.title),
               ),
             ),
