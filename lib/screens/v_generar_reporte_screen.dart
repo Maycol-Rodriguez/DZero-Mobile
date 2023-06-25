@@ -145,7 +145,7 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton.extended(
-        label: Text(loader ? 'Subiendo..' : 'Subir reporte'),
+        label: Text(loader ? 'Enviando....' : 'Enviar reporte'),
         icon: CircleAvatar(
           radius: 15,
           backgroundColor: Colors.transparent,

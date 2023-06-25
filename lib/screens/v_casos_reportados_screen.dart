@@ -21,19 +21,22 @@ class CasosReportadosScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, _) => Center(child: Text('Error: $error')),
         data: (reportes) {
-          return ListView.builder(
-            itemCount: reportes.length,
-            itemBuilder: (context, int index) {
-              return Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.all(20),
-                    child: _DataContainer(reportes[index]),
-                  ),
-                ],
-              );
-            },
+          return RefreshIndicator(
+            onRefresh: () => ref.refresh(obtenerReportesProvider.future),
+            child: ListView.builder(
+              itemCount: reportes.length,
+              itemBuilder: (context, int index) {
+                return Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.all(20),
+                      child: _DataContainer(reportes[index]),
+                    ),
+                  ],
+                );
+              },
+            ),
           );
         },
       ),
