@@ -18,7 +18,7 @@ class AppTheme {
             Radius.circular(20),
           ),
         ),
-        iconSize: 25,
+        iconSize: 30,
         sizeConstraints: BoxConstraints.tightFor(
           width: 50,
           height: 50,
@@ -63,6 +63,14 @@ class AppTheme {
       ),
       iconTheme: const IconThemeData(
         color: Colors.white,
+        size: 30,
+      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: Colors.white,
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        filled: true,
+        fillColor: Colors.transparent,
       ),
     );
   }

@@ -120,10 +120,7 @@ class ContenedorFooter extends ConsumerWidget {
             top: 0,
             child: FloatingActionButton(
               onPressed: () => context.pushNamed(GenerarReporteScreen.name),
-              heroTag: 1,
-              child: const Icon(
-                Icons.add,
-              ),
+              child: const Icon(Icons.add),
             ),
           ),
         ],

@@ -1,4 +1,3 @@
-import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:dio/dio.dart';
 import 'package:dzero/config/config.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -6,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 class ServicioReportes {
   final dio = Dio();
   List<Reporte> reportes = [];
+  bool estaCargando = false;
 
   Future<List<Reporte>> obtenerReportes() async {
     final peticion = await dio.get('${Environment.baseUrl}/reports.json');
@@ -20,9 +20,9 @@ class ServicioReportes {
   }
 
   Future<void> subirReportes(Reporte reporte) async {
-    final general = FirebaseDatabase.instance.ref().child('reports').push();
-    reporte.id = general.key!;
-    await general.set(reporte.toJson());
+    final db = FirebaseDatabase.instance.ref().child('reports').push();
+    reporte.id = db.key!;
+    await db.set(reporte.toJson());
     reportes.add(reporte);
   }
 

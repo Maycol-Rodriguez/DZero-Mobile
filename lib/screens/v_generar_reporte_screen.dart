@@ -22,62 +22,15 @@ class GenerarReporteScreen extends ConsumerStatefulWidget {
 
 class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
   File? _image;
-  String? path;
+  String path =
+      '/data/user/0/com.rodriguezmallqui.dzero/cache/c511ad9e-e429-4072-adc6-8109460c2c88/IMG-20230625-WA0012.jpg';
   String usuario = '';
   String descripcion = '';
 
-  Future _pickImage(ImageSource source) async {
-    try {
-      final image = await ImagePicker().pickImage(source: source);
-      if (image == null) return;
-      path = image.path;
-      File? img = File(image.path);
-      img = await _cropImage(imageFile: img);
-      setState(() {
-        _image = img;
-        context.pop();
-      });
-    } on PlatformException {
-      Navigator.of(context).pop();
-    }
-  }
-
-  Future<File?> _cropImage({required File imageFile}) async {
-    CroppedFile? croppedImage = await ImageCropper().cropImage(sourcePath: imageFile.path);
-    if (croppedImage == null) return null;
-    return File(croppedImage.path);
-  }
-
-  void _showSelectPhotoOptions(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(25.0),
-        ),
-      ),
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.28,
-        maxChildSize: 0.4,
-        minChildSize: 0.28,
-        expand: false,
-        builder: (context, scrollController) {
-          return SingleChildScrollView(
-            controller: scrollController,
-            child: SelectPhotoOptionsScreen(
-              onTap: _pickImage,
-            ),
-          );
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final loader = ref.watch(loadingProvider);
     final formReporte = ref.watch(formularioReporteProvider);
-    const uuid = Uuid();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -110,7 +63,11 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
                                       fit: BoxFit.cover,
                                       width: double.infinity,
                                     )
-                                  : Image.file(_image!, fit: BoxFit.cover, width: double.infinity),
+                                  : Image.file(
+                                      _image!,
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                    ),
                             ),
                           ),
                         ),
@@ -187,43 +144,106 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: colorTerceary,
-        heroTag: 1,
-        icon: const Icon(Icons.send, color: Colors.white),
-        label: const Text('Publicar reporte', style: TextStyle(color: Colors.white)),
-        onPressed: () async {
-          if (!formReporte.esValido()) return;
-          formReporte.esValido();
-          CloudinaryResponse response;
-          try {
-            response = await cloudinary.uploadFile(
-              CloudinaryFile.fromFile(
-                path!,
-                resourceType: CloudinaryResourceType.Image,
-              ),
-            );
-          } on CloudinaryException catch (e) {
-            throw (e.message!);
-          }
+        label: Text(loader ? 'Subiendo..' : 'Subir reporte'),
+        icon: CircleAvatar(
+          radius: 15,
+          backgroundColor: Colors.transparent,
+          child: loader
+              ? const CircularProgressIndicator(
+                  color: Colors.white,
+                )
+              : const Icon(Icons.save_outlined, color: Colors.white),
+        ),
+        extendedIconLabelSpacing: 15,
+        onPressed: loader
+            ? null
+            : () async {
+                if (!formReporte.esValido()) return;
+                formReporte.esValido();
+                ref.read(loadingProvider.notifier).state = true;
+                await enviarReporte();
+                ref.read(loadingProvider.notifier).state = false;
+                ref.invalidate(obtenerReportesProvider);
 
-          final reporte = Reporte(
-            id: '',
-            picture: response.secureUrl,
-            description: descripcion,
-            location: '-18.04807041556919, -95.18945304764888',
-            user: User(
-              id: uuid.v1(),
-              email: 'email@prueba.com',
-              name: usuario,
+                Future.delayed(const Duration(milliseconds: 50), () {
+                  context.pushReplacementNamed(VHomeScreen.name);
+                });
+              },
+      ),
+    );
+  }
+
+  Future<void> enviarReporte() async {
+    const uuid = Uuid();
+    CloudinaryResponse response;
+    try {
+      response = await cloudinary.uploadFile(
+        CloudinaryFile.fromFile(
+          path,
+          resourceType: CloudinaryResourceType.Image,
+        ),
+      );
+    } on CloudinaryException catch (e) {
+      throw (e.message!);
+    }
+
+    final reporte = Reporte(
+      id: '',
+      picture: response.secureUrl,
+      description: descripcion,
+      location: '-18.04807041556919, -95.18945304764888',
+      user: User(
+        id: uuid.v1(),
+        email: 'email@prueba.com',
+        name: usuario,
+      ),
+    );
+    await ref.read(subirReportesProvider(reporte).future);
+  }
+
+  Future _pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+      path = image.path;
+      File? img = File(image.path);
+      img = await _cropImage(imageFile: img);
+      setState(() {
+        _image = img;
+        context.pop();
+      });
+    } on PlatformException {
+      Navigator.of(context).pop();
+    }
+  }
+
+  Future<File?> _cropImage({required File imageFile}) async {
+    CroppedFile? croppedImage = await ImageCropper().cropImage(sourcePath: imageFile.path);
+    if (croppedImage == null) return null;
+    return File(croppedImage.path);
+  }
+
+  void _showSelectPhotoOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.28,
+        maxChildSize: 0.4,
+        minChildSize: 0.28,
+        expand: false,
+        builder: (context, scrollController) {
+          return SingleChildScrollView(
+            controller: scrollController,
+            child: SelectPhotoOptionsScreen(
+              onTap: _pickImage,
             ),
           );
-
-          ref.read(subirReportesProvider(reporte));
-
-          Future.delayed(const Duration(milliseconds: 50), () {
-            ref.invalidate(obtenerReportesProvider);
-            context.pushReplacementNamed(VHomeScreen.name);
-          });
         },
       ),
     );

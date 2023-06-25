@@ -1,4 +1,3 @@
-export 'camara_widget.dart';
 export 'common_button_widget.dart';
 export 'contenedor_casos.dart';
 export 'detalles_de_usuarios_widget.dart';

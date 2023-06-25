@@ -42,12 +42,6 @@ class SelectPhotoOptionsScreen extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            const Center(
-              child: Text(
-                'Ó',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
             const SizedBox(
               height: 10,
             ),

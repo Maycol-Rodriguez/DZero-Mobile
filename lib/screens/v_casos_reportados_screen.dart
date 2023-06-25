@@ -29,7 +29,7 @@ class CasosReportadosScreen extends ConsumerWidget {
                   Container(
                     width: double.infinity,
                     margin: const EdgeInsets.all(20),
-                    child: _DataContainer(reportes.reversed.toList()[index]),
+                    child: _DataContainer(reportes[index]),
                   ),
                 ],
               );
