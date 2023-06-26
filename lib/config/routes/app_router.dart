@@ -2,7 +2,7 @@ import 'package:dzero/screens/screens.dart';
 import 'package:go_router/go_router.dart';
 
 final rutas = GoRouter(
-  initialLocation: '/home',
+  initialLocation: '/registro',
   routes: [
     GoRoute(
       path: '/',

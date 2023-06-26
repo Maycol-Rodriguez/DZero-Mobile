@@ -1,9 +1,7 @@
 export 'constants/environment.dart';
-export 'mappers/type_reportes.dart';
-export 'mappers/inputs/email.dart';
-export 'mappers/inputs/password.dart';
-export 'mappers/login_user.dart';
+export 'mappers/auth_user.dart';
 export 'mappers/register_user.dart';
+export 'mappers/type_reportes.dart';
 export 'mappers/user.dart';
 export 'routes/app_router.dart';
 export 'services/cloudinary_service.dart';

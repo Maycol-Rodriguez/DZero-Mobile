@@ -29,6 +29,7 @@ dependencies:
   url_launcher: ^6.1.11
   google_fonts: ^4.0.4
   image_cropper: ^2.0.3
+  firebase_auth: ^4.6.3
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1

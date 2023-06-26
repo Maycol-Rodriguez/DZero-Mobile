@@ -5,6 +5,7 @@ void mostrarSnackBar(BuildContext context, String mensaje) {
   ScaffoldMessenger.of(context).clearSnackBars();
   final snackBar = SnackBar(
     content: Text(mensaje, style: textStyle!.copyWith(color: Colors.white, fontSize: 14)),
+    duration: const Duration(milliseconds: 2500),
     action: SnackBarAction(
       label: 'OK',
       onPressed: () {},

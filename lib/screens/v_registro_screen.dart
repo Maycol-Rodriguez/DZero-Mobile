@@ -1,4 +1,5 @@
 import 'package:dzero/config/config.dart';
+import 'package:dzero/models/models.dart';
 import 'package:dzero/screens/screens.dart';
 import 'package:dzero/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -11,99 +12,156 @@ class VRegistroScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
-    final size = MediaQuery.of(context).size;
-
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        body: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 100),
-              Container(
-                height: size.height - 180, // 80 los dos sizebox y 100 el ícono
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: scaffoldBackgroundColor,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(100),
-                  ),
-                ),
-                child: const _RegisterForm(),
-              )
-            ],
-          ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [
+            SizedBox(height: 100),
+            SizedBox(
+              width: double.infinity,
+              child: RegisterForm(),
+            )
+          ],
         ),
       ),
     );
   }
 }
 
-class _RegisterForm extends ConsumerWidget {
-  const _RegisterForm();
+class RegisterForm extends ConsumerStatefulWidget {
+  const RegisterForm({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  RegisterFormState createState() => RegisterFormState();
+}
+
+class RegisterFormState extends ConsumerState<RegisterForm> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String usuario = '';
+    String email = '';
+    String password = '';
+    final loader = ref.watch(loadingProvider);
     final textStyles = Theme.of(context).textTheme;
+    final formReporte = ref.watch(formularioReporteProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40),
-      child: Column(
-        children: [
-          const SizedBox(height: 50),
-          Text('Nueva Cuenta', style: textStyles.titleLarge),
-          const SizedBox(height: 90),
-          const CustomTextFormField(
-            label: 'Nombre completo',
-            keyboardType: TextInputType.text,
-          ),
-          const SizedBox(height: 30),
-          const CustomTextFormField(
-            label: 'Correo',
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 30),
-          const CustomTextFormField(
-            label: 'Contraseña',
-            obscureText: true,
-          ),
-          const SizedBox(height: 30),
-          const CustomTextFormField(
-            label: 'Repita la contraseña',
-            obscureText: true,
-          ),
-          const SizedBox(height: 30),
-          SizedBox(
-            width: double.infinity,
-            height: 60,
-            child: CustomFilledButton(
-              text: 'Crear',
-              buttonColor: colorTerceary,
-              onPressed: () {},
+      child: Form(
+        // key: ref.watch(formularioReporteProvider).formKey,
+        child: Column(
+          children: [
+            const SizedBox(height: 50),
+            Text('Nueva Cuenta', style: textStyles.titleLarge),
+            const SizedBox(height: 90),
+            CustomTextFormField(
+              label: 'Usuario',
+              keyboardType: TextInputType.text,
+              onChanged: (value) => usuario = value,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'El campo no puede estar vacío';
+                }
+                if (value.length < 6) {
+                  return 'El usuario debe tener al menos 3 caracteres';
+                }
+                return null;
+              },
             ),
-          ),
-          const Spacer(flex: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                '¿Ya tienes una cuenta en DZero?',
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal, color: Colors.white),
-              ),
-              TextButton(
-                onPressed: () => context.pushReplacementNamed(VLoginScreen.name),
-                child: const Text(
-                  'Inicie Sesión',
-                  style: TextStyle(color: colorTerceary, fontSize: 12),
+            const SizedBox(height: 30),
+            CustomTextFormField(
+              label: 'Correo',
+              keyboardType: TextInputType.emailAddress,
+              onChanged: (value) => email = value,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'El campo no puede estar vacío';
+                }
+                if (RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value) == false) {
+                  return 'El correo no es válido';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 30),
+            CustomTextFormField(
+              label: 'Contraseña',
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'El campo no puede estar vacío';
+                }
+                if (value.length < 6) {
+                  return 'La contraseña debe tener al menos 6 caracteres';
+                }
+                return null;
+              },
+              obscureText: true,
+              onChanged: (value) => password = value,
+            ),
+            const SizedBox(height: 30),
+            SizedBox(
+              width: double.infinity,
+              height: 60,
+              child: loader
+                  ? ElevatedButton(
+                      onPressed: () {},
+                      child: const CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Colors.transparent,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                        ),
+                      ),
+                    )
+                  : CustomFilledButton(
+                      text: 'Crear Cuenta',
+                      buttonColor: colorTerceary,
+                      onPressed: () async {
+                        if (!formReporte.esValido()) return;
+                        formReporte.esValido();
+                        ref.read(loadingProvider.notifier).state = true;
+                        final datos = AuthUser(context, email: email, password: password);
+                        final cuenta = await ref.read(crearCuenta(datos).future);
+                        ref.read(loadingProvider.notifier).state = false;
+                        if (cuenta == null) {
+                          await Future.delayed(const Duration(milliseconds: 2000), () {
+                            ref.read(formularioReporteProvider).reset();
+                            ref.read(formularioReporteProvider).fijarInput(context);
+                          });
+                          return;
+                        }
+                        await Future.delayed(const Duration(milliseconds: 2000), () {
+                          mostrarSnackBar(context, 'Cuenta creada con éxito');
+                          ref.read(formularioReporteProvider).reset();
+                          ref.read(formularioReporteProvider).fijarInput(context);
+                        });
+                      },
+                    ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  '¿Ya tienes una cuenta en DZero?',
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal, color: Colors.white),
                 ),
-              )
-            ],
-          ),
-          const Spacer(flex: 1),
-        ],
+                TextButton(
+                  onPressed: () => context.pushNamed(VLoginScreen.name),
+                  child: const Text(
+                    'Inicie Sesión',
+                    style: TextStyle(color: colorTerceary, fontSize: 12),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
