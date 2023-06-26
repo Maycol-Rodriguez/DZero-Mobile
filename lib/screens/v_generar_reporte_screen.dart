@@ -23,8 +23,7 @@ class GenerarReporteScreen extends ConsumerStatefulWidget {
 
 class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
   File? _image;
-  String path =
-      '/data/user/0/com.rodriguezmallqui.dzero/cache/c511ad9e-e429-4072-adc6-8109460c2c88/IMG-20230625-WA0012.jpg';
+  String? path;
   String usuario = '';
   String descripcion = '';
 
@@ -159,10 +158,14 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
         onPressed: loader
             ? null
             : () async {
+                if (_image == null) {
+                  mostrarSnackBar(context, 'Seleccione una imagen');
+                  return;
+                }
                 if (!formReporte.esValido()) return;
                 formReporte.esValido();
                 ref.read(loadingProvider.notifier).state = true;
-                await enviarReporte();
+                await _enviarReporte();
                 ref.read(loadingProvider.notifier).state = false;
                 ref.invalidate(obtenerReportesProvider);
 
@@ -175,13 +178,13 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
     );
   }
 
-  Future<void> enviarReporte() async {
+  Future<void> _enviarReporte() async {
     const uuid = Uuid();
     CloudinaryResponse response;
     try {
       response = await cloudinary.uploadFile(
         CloudinaryFile.fromFile(
-          path,
+          path!,
           resourceType: CloudinaryResourceType.Image,
         ),
       );
@@ -215,7 +218,7 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
         context.pop();
       });
     } on PlatformException {
-      Navigator.of(context).pop();
+      context.pop();
     }
   }
 

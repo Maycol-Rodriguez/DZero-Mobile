@@ -119,12 +119,9 @@ class ContenedorFooter extends ConsumerWidget {
           Positioned(
             right: 20,
             top: 0,
-            child: FadeInDown(
-              from: 40,
-              child: FloatingActionButton(
-                onPressed: () => context.pushNamed(GenerarReporteScreen.name),
-                child: const Icon(Icons.add),
-              ),
+            child: FloatingActionButton(
+              onPressed: () => context.pushNamed(GenerarReporteScreen.name),
+              child: const Icon(Icons.add),
             ),
           ),
         ],

@@ -77,12 +77,9 @@ class VPerfilScreen extends StatelessWidget {
                 Positioned(
                   right: 20,
                   top: 0,
-                  child: FadeInDown(
-                    from: 40,
-                    child: FloatingActionButton(
-                      onPressed: () {},
-                      child: const Icon(Icons.edit),
-                    ),
+                  child: FloatingActionButton(
+                    onPressed: () {},
+                    child: const Icon(Icons.edit),
                   ),
                 )
               ],
