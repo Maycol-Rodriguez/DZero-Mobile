@@ -1,32 +1,33 @@
 import 'package:dzero/config/config.dart';
 import 'package:dzero/screens/screens.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final rutas = GoRouter(
   initialLocation: '/login',
   routes: [
-    // GoRoute(
-    //   path: '/',
-    //   name: VPresentacionScreen.name,
-    //   builder: (context, state) => const VPresentacionScreen(),
-    // ),
-
     GoRoute(
-      path: '/',
+      path: '/registro',
+      name: VRegistroScreen.name,
+      builder: (context, state) => const VRegistroScreen(),
+    ),
+    GoRoute(
+      path: '/login',
+      name: VLoginScreen.name,
+      builder: (context, state) => const VLoginScreen(),
+    ),
+    GoRoute(
+      path: '/home',
       name: VHomeScreen.name,
+      redirect: (context, state) {
+        if (FirebaseAuth.instance.currentUser == null) {
+          return '/login';
+        }
+        return null;
+      },
       builder: (context, state) => const VHomeScreen(),
       routes: [
-        GoRoute(
-          path: 'login',
-          name: VLoginScreen.name,
-          builder: (context, state) => const VLoginScreen(),
-        ),
-        GoRoute(
-          path: 'registro',
-          name: VRegistroScreen.name,
-          builder: (context, state) => const VRegistroScreen(),
-        ),
         GoRoute(
           path: 'generar-reporte',
           name: GenerarReporteScreen.name,

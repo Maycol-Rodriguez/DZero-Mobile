@@ -1,59 +1,60 @@
-import 'package:dzero/widgets/widgets.dart';
+import 'package:dzero/screens/screens.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class DrawerWidget extends StatefulWidget {
-  final GlobalKey<ScaffoldState> drawerKey;
-  const DrawerWidget(this.drawerKey, {Key? key}) : super(key: key);
+class MyDrawer extends StatefulWidget {
+  final User usuario;
+  const MyDrawer({
+    super.key,
+    required this.usuario,
+  });
 
   @override
-  State<DrawerWidget> createState() => _DrawerWidgetState();
+  State<MyDrawer> createState() => _MyDrawerState();
 }
 
-class _DrawerWidgetState extends State<DrawerWidget> {
-  int navDrawerIndex = 0;
+class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
-    final hasNotch = MediaQuery.of(context).viewPadding.top > 35;
-
-    return NavigationDrawer(
-      selectedIndex: navDrawerIndex,
-      onDestinationSelected: (value) {
-        navDrawerIndex = value;
-        setState(() {});
-
-        final menuItem = appMenuItem[value];
-        context.push(menuItem.link);
-        widget.drawerKey.currentState?.closeDrawer();
-      },
-      children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(28, hasNotch ? 0 : 35, 16, 10),
-        ),
-        ...appMenuItem.sublist(0, 1).map(
-              (item) => NavigationDrawerDestination(
-                icon: Icon(item.icon, color: Colors.black),
-                label: Text(item.title),
+    return Drawer(
+      child: SafeArea(
+        child: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: Column(
+            children: [
+              const SizedBox(height: 30),
+              CircleAvatar(
+                radius: 100,
+                backgroundImage: widget.usuario.photoURL != null
+                    ? NetworkImage(widget.usuario.photoURL!) as ImageProvider<Object>
+                    : const AssetImage('assets/images/avatar.png'),
               ),
-            ),
-        const Padding(
-          padding: EdgeInsets.fromLTRB(28, 16, 28, 16),
-          child: Divider(),
-        ),
-        const Padding(
-          padding: EdgeInsets.fromLTRB(28, 10, 16, 10),
-          child: Text(
-            'Configuración',
-            style: TextStyle(color: Colors.grey),
+              const SizedBox(height: 50),
+              ListTile(
+                onTap: () => context.goNamed(VHomeScreen.name),
+                leading: const Icon(Icons.home),
+                title: const Text('Inicio'),
+              ),
+              ListTile(
+                onTap: () => context.pushNamed(VPerfilScreen.name),
+                leading: const Icon(Icons.person),
+                title: const Text('Perfil'),
+              ),
+              const Spacer(),
+              ListTile(
+                onTap: () {
+                  FirebaseAuth.instance.signOut();
+                  setState(() {});
+                },
+                leading: const Icon(Icons.logout_rounded),
+                title: const Text('Cerrar sesion'),
+              ),
+            ],
           ),
         ),
-        ...appMenuItem.sublist(1, 2).map(
-              (item) => NavigationDrawerDestination(
-                icon: Icon(item.icon),
-                label: Text(item.title),
-              ),
-            ),
-      ],
+      ),
     );
   }
 }

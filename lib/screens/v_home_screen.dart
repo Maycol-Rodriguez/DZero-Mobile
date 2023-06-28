@@ -21,28 +21,38 @@ class VHomeScreenState extends ConsumerState<VHomeScreen> {
   void initState() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
-        print('Usuario autenticado');
+        mostrarSnackBar(context, 'Usuario autenticado correctamente');
+      } else {
+        mostrarSnackBar(context, 'Sesion cerrada correctamente');
+        context.go('/login');
+        setState(() {});
       }
     });
     super.initState();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> drawerKey = GlobalKey<ScaffoldState>();
     final data = ref.watch(obtenerReportesProvider);
+    final usuario = ref.watch(usuarioAutenticado);
 
     return Scaffold(
       appBar: AppBar(),
       key: drawerKey,
-      drawer: DrawerWidget(drawerKey),
+      drawer: MyDrawer(usuario: usuario),
       body: SafeArea(
         child: data.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, _) => Center(child: Text('Error: $error')),
           data: (value) {
             final misCasos =
-                value.where((element) => element.id == FirebaseAuth.instance.currentUser!.uid).length;
+                value.where((element) => element.id == FirebaseAuth.instance.currentUser?.uid).length;
             return Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,

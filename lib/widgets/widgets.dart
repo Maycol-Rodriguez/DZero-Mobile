@@ -6,7 +6,6 @@ export 'drawer_widget.dart';
 export 'grafico_circular_widget.dart';
 export 'inputs/custom_filled_button.dart';
 export 'inputs/custom_text_form_field.dart';
-export 'item_drawer_widget.dart';
 export 'opcion_camara_widget.dart';
 export 'titulo_separador_widget.dart';
 export 'tutorial_widget.dart';
