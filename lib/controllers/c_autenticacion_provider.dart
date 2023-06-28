@@ -25,4 +25,24 @@ class Autenticacion {
     }
     return null;
   }
+
+  static Future<UserCredential?> iniciarSesion(AuthUser user) async {
+    try {
+      final credencial = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: user.email,
+        password: user.password,
+      );
+      return credencial;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        mostrarSnackBar(user.context, 'No se encontro una cuenta con ese correo.');
+      }
+      if (e.code == 'wrong-password') {
+        mostrarSnackBar(user.context, 'Contraseña incorrecta.');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+    return null;
+  }
 }

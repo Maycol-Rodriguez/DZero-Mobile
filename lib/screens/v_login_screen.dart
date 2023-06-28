@@ -53,11 +53,10 @@ class LoginFormState extends ConsumerState<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final textStyles = Theme.of(context).textTheme;
     String email = '';
     String password = '';
+    final textStyles = Theme.of(context).textTheme;
     final loader = ref.watch(loadingProvider);
-
     final formLogin = ref.watch(formularioReporteProvider);
 
     return Form(
@@ -100,14 +99,41 @@ class LoginFormState extends ConsumerState<LoginForm> {
           SizedBox(
             width: double.infinity,
             height: 60,
-            child: CustomFilledButton(
-              text: 'Ingresar',
-              buttonColor: colorTerceary,
-              onPressed: () {
-                if (!formLogin.loginEsValido()) return;
-                formLogin.loginEsValido();
-              },
-            ),
+            child: loader
+                ? ElevatedButton(
+                    onPressed: () {},
+                    child: const CircleAvatar(
+                      radius: 10,
+                      backgroundColor: Colors.transparent,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 3,
+                      ),
+                    ),
+                  )
+                : CustomFilledButton(
+                    text: 'Ingresar',
+                    buttonColor: colorTerceary,
+                    onPressed: () async {
+                      if (!formLogin.loginEsValido()) return;
+                      formLogin.loginEsValido();
+                      ref.read(loadingProvider.notifier).state = true;
+                      final usuario = AuthUser(context, email: email, password: password);
+                      final cuenta = await ref.read(iniciarSesion(usuario).future);
+                      if (cuenta == null) {
+                        ref.read(loadingProvider.notifier).state = false;
+                        await Future.delayed(const Duration(milliseconds: 1000), () {
+                          ref.read(formularioReporteProvider).reset();
+                          ref.read(formularioReporteProvider).fijarInput(context);
+                        });
+                        return;
+                      }
+                      ref.read(loadingProvider.notifier).state = false;
+                      await Future.delayed(
+                        const Duration(milliseconds: 300),
+                        () => context.goNamed(VHomeScreen.name),
+                      );
+                    },
+                  ),
           ),
           const SizedBox(height: 40),
           SizedBox(
