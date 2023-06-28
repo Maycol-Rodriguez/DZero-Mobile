@@ -1,16 +1,14 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:dzero/config/config.dart';
 import 'package:dzero/models/models.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class CasosReportadosScreen extends ConsumerWidget {
-  static const String name = 'casos-screen';
-
-  const CasosReportadosScreen({
-    Key? key,
-  }) : super(key: key);
+class MisCasosScreen extends ConsumerWidget {
+  static const String name = 'mis-casos-screen';
+  const MisCasosScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,17 +21,19 @@ class CasosReportadosScreen extends ConsumerWidget {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, _) => Center(child: Text('Error: $error')),
           data: (reportes) {
+            final filtro =
+                reportes.where((element) => element.id == FirebaseAuth.instance.currentUser!.uid).toList();
             return RefreshIndicator(
               onRefresh: () => ref.refresh(obtenerReportesProvider.future),
               child: ListView.builder(
-                itemCount: reportes.length,
+                itemCount: filtro.length,
                 itemBuilder: (context, int index) {
                   return Column(
                     children: [
                       Container(
                         width: double.infinity,
                         margin: const EdgeInsets.all(20),
-                        child: _DataContainer(reportes[index]),
+                        child: _DataContainer(filtro[index]),
                       ),
                     ],
                   );

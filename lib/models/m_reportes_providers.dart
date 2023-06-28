@@ -10,10 +10,6 @@ final subirReportesProvider = FutureProvider.family<void, Reporte>((ref, data) a
   await ServicioReportes().subirReportes(data);
 });
 
-final obtenerReporteIdProvider = FutureProvider.family<Reporte, String>((ref, id) async {
-  return await ServicioReportes().obtenerReporteId(id);
-});
-
 final loadingProvider = StateProvider<bool>((ref) {
   return false;
 });

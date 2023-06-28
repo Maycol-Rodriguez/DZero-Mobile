@@ -143,11 +143,11 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
         onPressed: loader
             ? null
             : () async {
+                if (!formReporte.reporteEsValido()) return;
                 if (_image == null) {
                   mostrarSnackBar(context, 'Seleccione una imagen');
                   return;
                 }
-                if (!formReporte.reporteEsValido()) return;
                 formReporte.reporteEsValido();
                 ref.read(loadingProvider.notifier).state = true;
                 await _enviarReporte();
@@ -177,7 +177,7 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
     }
 
     final reporte = Reporte(
-      id: '',
+      id: usuario!.uid,
       picture: response.secureUrl,
       description: descripcion,
       location: '${respuestaAsync!.value!.latitude}, ${respuestaAsync!.value!.longitude}',

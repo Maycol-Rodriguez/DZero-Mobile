@@ -23,7 +23,7 @@ class CasosDeUsuariosWidget extends StatelessWidget {
             children: [
               _CasosRegistrados(
                 FontAwesomeIcons.addressBook,
-                '$ultimosCasos',
+                '$misCasos',
                 'Tus Casos',
                 colorSecondary,
               ),
@@ -31,7 +31,7 @@ class CasosDeUsuariosWidget extends StatelessWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () => context.pushNamed(CasosReportadosScreen.name),
+                    onTap: () => context.pushNamed(MisCasosScreen.name),
                     overlayColor: MaterialStateProperty.all(Colors.white.withOpacity(0.2)),
                     splashFactory: InkRipple.splashFactory,
                     borderRadius: CustomBorder.radiusAll,

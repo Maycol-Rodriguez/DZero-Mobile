@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:dzero/config/config.dart';
 import 'package:dzero/models/models.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +28,13 @@ class VPerfilScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  const Hero(
+                  Hero(
                     tag: 2,
                     child: CircleAvatar(
                       radius: 100,
-                      backgroundImage: AssetImage('assets/images/avatar.png'),
+                      backgroundImage: usuario.photoURL != null
+                          ? NetworkImage(usuario.photoURL!) as ImageProvider<Object>
+                          : const AssetImage('assets/images/avatar.png'),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -67,12 +68,10 @@ class VPerfilScreen extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
                       child: Column(
                         children: [
-                          FadeInUp(
-                            child: _DatosWidget(
-                              email: usuario.email!,
-                              celular: usuario.phoneNumber,
-                              nombre: usuario.displayName,
-                            ),
+                          _DatosWidget(
+                            email: usuario.email!,
+                            celular: usuario.phoneNumber,
+                            nombre: usuario.displayName,
                           ),
                         ],
                       ),

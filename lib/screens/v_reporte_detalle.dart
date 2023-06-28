@@ -5,54 +5,48 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ReporteDetalleScreen extends ConsumerWidget {
   static const String name = 'reporte-detalle';
-  final String reporteId;
-  const ReporteDetalleScreen({Key? key, required this.reporteId}) : super(key: key);
+  final Reporte reporte;
+
+  const ReporteDetalleScreen({
+    Key? key,
+    required this.reporte,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final respuestaAsync = ref.watch(obtenerReporteIdProvider(reporteId));
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: respuestaAsync.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, _) => Text('Error: $error'),
-          data: (reporte) {
-            return SingleChildScrollView(
-              physics: const ScrollPhysics(),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+              decoration: CustomDecoration.decoration(false, true),
               child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-                    decoration: CustomDecoration.decoration(false, true),
-                    child: Column(
-                      children: [
-                        ClipRRect(
-                          borderRadius: CustomBorder.radiusTop,
-                          child: FadeInImage(
-                            placeholder: const AssetImage('assets/loaders/bottle-loader.gif'),
-                            image: NetworkImage(reporte.picture!),
-                            height: 380,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Container(
-                          decoration: CustomDecoration.decoration(false, false, false, true),
-                          padding: const EdgeInsets.all(10),
-                          child: _UsuarioDetalle(reporte),
-                        ),
-                      ],
+                  ClipRRect(
+                    borderRadius: CustomBorder.radiusTop,
+                    child: FadeInImage(
+                      placeholder: const AssetImage('assets/loaders/bottle-loader.gif'),
+                      image: NetworkImage(reporte.picture!),
+                      height: 380,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
                     ),
-                  )
+                  ),
+                  Container(
+                    decoration: CustomDecoration.decoration(false, false, false, true),
+                    padding: const EdgeInsets.all(10),
+                    child: _UsuarioDetalle(reporte),
+                  ),
                 ],
               ),
-            );
-          },
+            )
+          ],
         ),
       ),
     );

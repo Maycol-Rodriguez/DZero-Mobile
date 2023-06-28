@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:dzero/config/mappers/type_reportes.dart';
 import 'package:dzero/config/themes/design/custom_box_decoration.dart';
 import 'package:dzero/models/models.dart';
@@ -42,11 +41,13 @@ class VHomeScreenState extends ConsumerState<VHomeScreen> {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, _) => Center(child: Text('Error: $error')),
           data: (value) {
+            final misCasos =
+                value.where((element) => element.id == FirebaseAuth.instance.currentUser!.uid).length;
             return Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ContenedorHeader(value.length, value.length),
+                ContenedorHeader(misCasos, value.length),
                 ContenedorFooter(data, value),
               ],
             );
@@ -115,7 +116,7 @@ class ContenedorFooter extends ConsumerWidget {
             width: size.width,
             bottom: 0,
             child: GestureDetector(
-              onTap: () => context.push('/reporte-detalle/${reportes[0].id}'),
+              onTap: () => context.push('/reporte-detalle', extra: reportes[0]),
               child: Container(
                 width: double.infinity,
                 height: size.height * 0.28,
@@ -126,7 +127,7 @@ class ContenedorFooter extends ConsumerWidget {
                   data: (value) {
                     return Padding(
                       padding: const EdgeInsets.all(25),
-                      child: FadeInUp(child: UltimoCasoWidget(ultimoReporte: reportes[0])),
+                      child: UltimoCasoWidget(ultimoReporte: reportes[0]),
                     );
                   },
                 ),

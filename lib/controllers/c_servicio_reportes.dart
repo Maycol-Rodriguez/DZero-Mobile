@@ -21,15 +21,7 @@ class ServicioReportes {
 
   Future<void> subirReportes(Reporte reporte) async {
     final db = FirebaseDatabase.instance.ref().child('reports').push();
-    reporte.id = db.key!;
     await db.set(reporte.toJson());
     reportes.add(reporte);
-  }
-
-  Future<Reporte> obtenerReporteId(String id) async {
-    final peticion = await dio.get('${Environment.baseUrl}/reports/$id.json');
-    final Map<String, dynamic> respuesta = peticion.data;
-    final reporte = Reporte.fromJson(respuesta);
-    return reporte;
   }
 }

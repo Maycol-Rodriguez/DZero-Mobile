@@ -20,14 +20,18 @@ class DetallesDeUsuariosWidget extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              usuario.displayName!,
+              usuario.displayName!.contains(' ')
+                  ? usuario.displayName!.split(' ').join('\n')
+                  : usuario.displayName!,
               style: titleLarge,
             ),
-            const Hero(
+            Hero(
               tag: 2,
               child: CircleAvatar(
                 radius: 80,
-                backgroundImage: AssetImage('assets/images/avatar.png'),
+                backgroundImage: usuario.photoURL != null
+                    ? NetworkImage(usuario.photoURL!) as ImageProvider<Object>
+                    : const AssetImage('assets/images/avatar.png'),
               ),
             ),
           ],
