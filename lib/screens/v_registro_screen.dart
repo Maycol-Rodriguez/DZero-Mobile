@@ -49,12 +49,12 @@ class RegisterFormState extends ConsumerState<RegisterForm> {
     String password = '';
     final loader = ref.watch(loadingProvider);
     final textStyles = Theme.of(context).textTheme;
-    final formReporte = ref.watch(formularioReporteProvider);
+    final formRegistro = ref.watch(formularioReporteProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40),
       child: Form(
-        // key: ref.watch(formularioReporteProvider).formKey,
+        key: ref.watch(formularioReporteProvider).formRegisterKey,
         child: Column(
           children: [
             const SizedBox(height: 50),
@@ -123,8 +123,8 @@ class RegisterFormState extends ConsumerState<RegisterForm> {
                       text: 'Crear Cuenta',
                       buttonColor: colorTerceary,
                       onPressed: () async {
-                        if (!formReporte.esValido()) return;
-                        formReporte.esValido();
+                        if (!formRegistro.registroEsValido()) return;
+                        formRegistro.registroEsValido();
                         ref.read(loadingProvider.notifier).state = true;
                         final datos = AuthUser(context, email: email, password: password);
                         final cuenta = await ref.read(crearCuenta(datos).future);
@@ -152,7 +152,7 @@ class RegisterFormState extends ConsumerState<RegisterForm> {
                   style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal, color: Colors.white),
                 ),
                 TextButton(
-                  onPressed: () => context.pushNamed(VLoginScreen.name),
+                  onPressed: () => context.goNamed(VLoginScreen.name),
                   child: const Text(
                     'Inicie Sesión',
                     style: TextStyle(color: colorTerceary, fontSize: 12),

@@ -91,7 +91,7 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   decoration: CustomDecoration.decoration(false),
                   child: Form(
-                    key: ref.watch(formularioReporteProvider).formKey,
+                    key: ref.watch(formularioReporteProvider).formReportKey,
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
@@ -162,8 +162,8 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
                   mostrarSnackBar(context, 'Seleccione una imagen');
                   return;
                 }
-                if (!formReporte.esValido()) return;
-                formReporte.esValido();
+                if (!formReporte.reporteEsValido()) return;
+                formReporte.reporteEsValido();
                 ref.read(loadingProvider.notifier).state = true;
                 await _enviarReporte();
                 ref.read(loadingProvider.notifier).state = false;

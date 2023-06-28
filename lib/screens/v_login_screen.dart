@@ -57,10 +57,11 @@ class LoginFormState extends ConsumerState<LoginForm> {
     String email = '';
     String password = '';
     final loader = ref.watch(loadingProvider);
-    final formReporte = ref.watch(formularioReporteProvider);
+
+    final formLogin = ref.watch(formularioReporteProvider);
 
     return Form(
-      // key: ref.read(formularioReporteProvider).formKey,
+      key: ref.read(formularioReporteProvider).formLoginKey,
       child: Column(
         children: [
           const SizedBox(height: 30),
@@ -103,8 +104,8 @@ class LoginFormState extends ConsumerState<LoginForm> {
               text: 'Ingresar',
               buttonColor: colorTerceary,
               onPressed: () {
-                if (!formReporte.esValido()) return;
-                formReporte.esValido();
+                if (!formLogin.loginEsValido()) return;
+                formLogin.loginEsValido();
               },
             ),
           ),
@@ -128,7 +129,7 @@ class LoginFormState extends ConsumerState<LoginForm> {
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Colors.white),
               ),
               TextButton(
-                onPressed: () => context.pushNamed(VRegistroScreen.name),
+                onPressed: () => context.goNamed(VRegistroScreen.name),
                 child: const Text(
                   'Registrese',
                   style: TextStyle(color: colorTerceary, fontSize: 14),
