@@ -1,14 +1,14 @@
-class User {
+class UserReporte {
   final String email;
   final String name;
   final String id;
-  User({
+  UserReporte({
     required this.email,
     required this.name,
     required this.id,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory UserReporte.fromJson(Map<String, dynamic> json) => UserReporte(
         email: json["email"],
         name: json["name"],
         id: json["id"],

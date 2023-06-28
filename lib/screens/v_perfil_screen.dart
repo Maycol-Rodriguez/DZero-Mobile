@@ -1,16 +1,20 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:dzero/config/config.dart';
+import 'package:dzero/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class VPerfilScreen extends StatelessWidget {
+class VPerfilScreen extends ConsumerWidget {
   static const String name = 'perfil_screen';
 
   const VPerfilScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
     final textStyle = Theme.of(context).textTheme.titleSmall;
+    final usuario = ref.watch(usuarioAutenticado);
+
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -33,12 +37,13 @@ class VPerfilScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Text(
-                    'Miguel Perez',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                  Text(
+                    usuario.displayName!,
+                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   const SizedBox(height: 10),
-                  Text('Agente ID: RS-123456', textAlign: TextAlign.center, style: textStyle),
+                  Text('Usuario ID: ${usuario.uid.substring(0, 6)}...',
+                      textAlign: TextAlign.center, style: textStyle),
                   const SizedBox(height: 20),
                 ],
               ),
@@ -63,10 +68,10 @@ class VPerfilScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           FadeInUp(
-                            child: const _DatosWidget(
-                              email: 'Miguel354@gmail.com',
-                              celular: '998238145',
-                              direccion: 'Calle Santa Lucia 223',
+                            child: _DatosWidget(
+                              email: usuario.email!,
+                              celular: usuario.phoneNumber,
+                              nombre: usuario.displayName,
                             ),
                           ),
                         ],
@@ -94,13 +99,13 @@ class VPerfilScreen extends StatelessWidget {
 class _DatosWidget extends StatelessWidget {
   final String email;
   final String? celular;
-  final String? direccion;
+  final String? nombre;
+
   const _DatosWidget({
-    Key? key,
     required this.email,
-    this.celular,
-    this.direccion,
-  }) : super(key: key);
+    required this.nombre,
+    required this.celular,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -108,9 +113,9 @@ class _DatosWidget extends StatelessWidget {
       children: [
         _DatosPersonales(dato: email),
         const SizedBox(height: 12),
-        _DatosPersonales(dato: celular ?? 'No añadio un numero celular'),
+        _DatosPersonales(dato: celular ?? 'No añadio un telefono'),
         const SizedBox(height: 12),
-        _DatosPersonales(dato: direccion ?? 'No añadio una dirección'),
+        _DatosPersonales(dato: nombre ?? 'No añadio un nombre'),
       ],
     );
   }
@@ -128,12 +133,18 @@ class _DatosPersonales extends StatelessWidget {
       children: [
         Image.asset('assets/icons/lista.png', width: 20),
         const SizedBox(width: 15),
-        Text(
-          dato,
-          style: const TextStyle(
-            fontSize: 20,
-            color: Colors.black,
-            fontWeight: FontWeight.normal,
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.7,
+          child: Expanded(
+            child: Text(
+              dato,
+              style: const TextStyle(
+                fontSize: 20,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ),
         ),
       ],

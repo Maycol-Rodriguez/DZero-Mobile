@@ -5,13 +5,13 @@ import 'package:dzero/config/config.dart';
 import 'package:dzero/models/models.dart';
 import 'package:dzero/screens/screens.dart';
 import 'package:dzero/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:uuid/uuid.dart';
 
 class GenerarReporteScreen extends ConsumerStatefulWidget {
   static const String name = 'generar-reporte';
@@ -24,13 +24,14 @@ class GenerarReporteScreen extends ConsumerStatefulWidget {
 class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
   File? _image;
   String? path;
-  String usuario = '';
+  User? usuario;
   String descripcion = '';
 
   @override
   Widget build(BuildContext context) {
     final loader = ref.watch(loadingProvider);
     final formReporte = ref.watch(formularioReporteProvider);
+    usuario = ref.watch(usuarioAutenticado);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -94,25 +95,6 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
                     key: ref.watch(formularioReporteProvider).formReportKey,
                     child: Column(
                       children: [
-                        const SizedBox(height: 10),
-                        TextFormField(
-                          onChanged: (value) => usuario = value,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecorations.authInputDecoration(
-                            labelText: 'Nombre',
-                            hintText: 'Nombre del usuario',
-                            prefixIcon: Icons.person,
-                          ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp('^[a-zA-Z.,]+')),
-                          ],
-                          validator: (value) {
-                            if (value!.isEmpty || value.length < 3) {
-                              return 'El nombre es obligatorio';
-                            }
-                            return null;
-                          },
-                        ),
                         const SizedBox(height: 30),
                         TextFormField(
                           maxLines: 3,
@@ -179,7 +161,6 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
   }
 
   Future<void> _enviarReporte() async {
-    const uuid = Uuid();
     CloudinaryResponse response;
     try {
       response = await cloudinary.uploadFile(
@@ -197,10 +178,10 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
       picture: response.secureUrl,
       description: descripcion,
       location: '-18.04807041556919, -95.18945304764888',
-      user: User(
-        id: uuid.v1(),
-        email: 'email@prueba.com',
-        name: usuario,
+      user: UserReporte(
+        id: usuario!.uid,
+        email: usuario!.email!,
+        name: usuario!.displayName!,
       ),
     );
     await ref.read(subirReportesProvider(reporte).future);

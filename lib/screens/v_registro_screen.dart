@@ -130,14 +130,14 @@ class RegisterFormState extends ConsumerState<RegisterForm> {
                         final cuenta = await ref.read(crearCuenta(datos).future);
                         ref.read(loadingProvider.notifier).state = false;
                         if (cuenta == null) {
-                          await Future.delayed(const Duration(milliseconds: 2000), () {
+                          await Future.delayed(const Duration(milliseconds: 1500), () {
                             ref.read(formularioReporteProvider).reset();
                             ref.read(formularioReporteProvider).fijarInput(context);
                           });
                           return;
                         }
                         await cuenta.user!.updateDisplayName(usuario);
-                        await Future.delayed(const Duration(milliseconds: 2000), () {
+                        await Future.delayed(const Duration(milliseconds: 1500), () {
                           mostrarSnackBar(context, 'Cuenta creada con éxito');
                           ref.read(formularioReporteProvider).reset();
                           ref.read(formularioReporteProvider).fijarInput(context);

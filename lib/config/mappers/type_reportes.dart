@@ -4,7 +4,7 @@ class Reporte {
   String? description;
   String location;
   String? picture;
-  User user;
+  UserReporte user;
   String id;
 
   Reporte({
@@ -20,7 +20,9 @@ class Reporte {
         description: json["description"],
         location: json["location"],
         picture: json["picture"],
-        user: json["user"] == null ? User(email: '', name: '', id: '') : User.fromJson(json["user"]),
+        user: json["user"] == null
+            ? UserReporte(email: '', name: '', id: '')
+            : UserReporte.fromJson(json["user"]),
       );
 
   Map<String, dynamic> toJson() => {
