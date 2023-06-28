@@ -136,6 +136,7 @@ class RegisterFormState extends ConsumerState<RegisterForm> {
                           });
                           return;
                         }
+                        await cuenta.user!.updateDisplayName(usuario);
                         await Future.delayed(const Duration(milliseconds: 2000), () {
                           mostrarSnackBar(context, 'Cuenta creada con éxito');
                           ref.read(formularioReporteProvider).reset();

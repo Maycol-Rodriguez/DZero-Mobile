@@ -3,6 +3,8 @@ import 'package:dzero/widgets/custom_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Autenticacion {
+  UserCredential? usuarioAutenticado;
+
   static Future<UserCredential?> crearCuenta(AuthUser user) async {
     try {
       final credencial = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -26,12 +28,14 @@ class Autenticacion {
     return null;
   }
 
-  static Future<UserCredential?> iniciarSesion(AuthUser user) async {
+  Future<UserCredential?> iniciarSesion(AuthUser user) async {
     try {
       final credencial = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: user.email,
         password: user.password,
       );
+      usuarioAutenticado = credencial;
+
       return credencial;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

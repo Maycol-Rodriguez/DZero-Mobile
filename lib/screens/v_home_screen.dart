@@ -1,18 +1,35 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:dzero/config/config.dart';
+import 'package:dzero/config/mappers/type_reportes.dart';
+import 'package:dzero/config/themes/design/custom_box_decoration.dart';
 import 'package:dzero/models/models.dart';
 import 'package:dzero/screens/screens.dart';
 import 'package:dzero/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class VHomeScreen extends ConsumerWidget {
+class VHomeScreen extends ConsumerStatefulWidget {
   static const String name = 'home_screen';
   const VHomeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  VHomeScreenState createState() => VHomeScreenState();
+}
+
+class VHomeScreenState extends ConsumerState<VHomeScreen> {
+  @override
+  void initState() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        print('Usuario autenticado');
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> drawerKey = GlobalKey<ScaffoldState>();
     final data = ref.watch(obtenerReportesProvider);
 
