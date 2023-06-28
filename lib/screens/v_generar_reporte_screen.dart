@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,12 +27,14 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
   String? path;
   User? usuario;
   String descripcion = '';
+  AsyncValue<Position>? respuestaAsync;
 
   @override
   Widget build(BuildContext context) {
     final loader = ref.watch(loadingProvider);
     final formReporte = ref.watch(formularioReporteProvider);
     usuario = ref.watch(usuarioAutenticado);
+    respuestaAsync = ref.watch(ubicacionProvider);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -177,7 +180,7 @@ class GenerarReporteScreenState extends ConsumerState<GenerarReporteScreen> {
       id: '',
       picture: response.secureUrl,
       description: descripcion,
-      location: '-18.04807041556919, -95.18945304764888',
+      location: '${respuestaAsync!.value!.latitude}, ${respuestaAsync!.value!.longitude}',
       user: UserReporte(
         id: usuario!.uid,
         email: usuario!.email!,
