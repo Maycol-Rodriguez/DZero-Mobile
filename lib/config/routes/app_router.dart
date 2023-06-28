@@ -8,26 +8,26 @@ final rutas = GoRouter(
   initialLocation: '/login',
   routes: [
     GoRoute(
-      path: '/registro',
-      name: VRegistroScreen.name,
-      builder: (context, state) => const VRegistroScreen(),
-    ),
-    GoRoute(
-      path: '/login',
-      name: VLoginScreen.name,
-      builder: (context, state) => const VLoginScreen(),
-    ),
-    GoRoute(
-      path: '/home',
+      path: '/',
       name: VHomeScreen.name,
+      builder: (context, state) => const VHomeScreen(),
       redirect: (context, state) {
         if (FirebaseAuth.instance.currentUser == null) {
           return '/login';
         }
         return null;
       },
-      builder: (context, state) => const VHomeScreen(),
       routes: [
+        GoRoute(
+          path: 'login',
+          name: VLoginScreen.name,
+          builder: (context, state) => const VLoginScreen(),
+        ),
+        GoRoute(
+          path: 'registro',
+          name: VRegistroScreen.name,
+          builder: (context, state) => const VRegistroScreen(),
+        ),
         GoRoute(
           path: 'generar-reporte',
           name: GenerarReporteScreen.name,
