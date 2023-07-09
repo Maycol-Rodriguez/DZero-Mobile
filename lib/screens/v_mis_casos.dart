@@ -108,7 +108,7 @@ class _DataContainer extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () => context.push('/reporte-detalle', extra: reporte),
+              onTap: () => context.push('/login/home/reporte-detalle', extra: reporte),
               overlayColor: MaterialStateProperty.all(Colors.white.withOpacity(0.2)),
               splashFactory: InkRipple.splashFactory,
               borderRadius: CustomBorder.radiusAll,

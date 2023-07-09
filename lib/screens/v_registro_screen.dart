@@ -137,7 +137,7 @@ class RegisterFormState extends ConsumerState<RegisterForm> {
                           return;
                         }
                         await cuenta.user!.updateDisplayName(usuario);
-                        await Future.delayed(const Duration(milliseconds: 1500), () {
+                        await Future.delayed(const Duration(milliseconds: 1000), () {
                           mostrarSnackBar(context, 'Cuenta creada con éxito');
                           ref.read(formularioReporteProvider).reset();
                           ref.read(formularioReporteProvider).fijarInput(context);

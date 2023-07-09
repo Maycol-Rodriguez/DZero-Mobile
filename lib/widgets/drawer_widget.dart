@@ -25,11 +25,30 @@ class _MyDrawerState extends State<MyDrawer> {
           child: Column(
             children: [
               const SizedBox(height: 30),
-              CircleAvatar(
-                radius: 100,
-                backgroundImage: widget.usuario.photoURL != null
-                    ? NetworkImage(widget.usuario.photoURL!) as ImageProvider<Object>
-                    : const AssetImage('assets/images/avatar.png'),
+              Container(
+                width: 100,
+                height: 100,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(150)),
+                  child: widget.usuario.photoURL != null
+                      ? FadeInImage(
+                          placeholder: const AssetImage('assets/loaders/jar-loading.gif'),
+                          image: Image.network(
+                            widget.usuario.photoURL!,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ).image,
+                        )
+                      : const Image(
+                          image: AssetImage('assets/images/avatar.png'),
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                        ),
+                ),
               ),
               const SizedBox(height: 50),
               ListTile(

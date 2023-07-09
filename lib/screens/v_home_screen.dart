@@ -21,7 +21,7 @@ class VHomeScreenState extends ConsumerState<VHomeScreen> {
   void initState() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
-        mostrarSnackBar(context, 'Usuario autenticado correctamente');
+        // mostrarSnackBar(context, 'Usuario autenticado correctamente');
       } else {
         mostrarSnackBar(context, 'Sesion cerrada correctamente');
         context.go('/login');
@@ -126,7 +126,7 @@ class ContenedorFooter extends ConsumerWidget {
             width: size.width,
             bottom: 0,
             child: GestureDetector(
-              onTap: () => context.push('/reporte-detalle', extra: reportes[0]),
+              onTap: () => context.push('/login/home/reporte-detalle', extra: reportes[0]),
               child: Container(
                 width: double.infinity,
                 height: size.height * 0.28,

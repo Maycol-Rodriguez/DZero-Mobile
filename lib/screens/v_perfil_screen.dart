@@ -1,15 +1,32 @@
+import 'dart:io';
+
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:dzero/config/config.dart';
 import 'package:dzero/models/models.dart';
+import 'package:dzero/screens/screens.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
-class VPerfilScreen extends ConsumerWidget {
+class VPerfilScreen extends ConsumerStatefulWidget {
   static const String name = 'perfil_screen';
 
   const VPerfilScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  VPerfilScreenState createState() => VPerfilScreenState();
+}
+
+class VPerfilScreenState extends ConsumerState<VPerfilScreen> {
+  File? _image;
+  String? path;
+
+  @override
+  Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final textStyle = Theme.of(context).textTheme.titleSmall;
     final usuario = ref.watch(usuarioAutenticado);
@@ -28,13 +45,35 @@ class VPerfilScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Hero(
-                    tag: 2,
-                    child: CircleAvatar(
-                      radius: 100,
-                      backgroundImage: usuario.photoURL != null
-                          ? NetworkImage(usuario.photoURL!) as ImageProvider<Object>
-                          : const AssetImage('assets/images/avatar.png'),
+                  GestureDetector(
+                    onTap: () => _showSelectPhotoOptions(context),
+                    child: Container(
+                      width: 250,
+                      height: 250,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(Radius.circular(150)),
+                        child: usuario.photoURL != null
+                            ? Image.network(
+                                usuario.photoURL!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              )
+                            : _image == null
+                                ? const Image(
+                                    image: AssetImage('assets/images/avatar.png'),
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                  )
+                                : Image.file(
+                                    _image!,
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                  ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -90,6 +129,69 @@ class VPerfilScreen extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Future _pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+      path = image.path;
+      File? img = File(image.path);
+      img = await _cropImage(imageFile: img);
+      CloudinaryResponse response;
+      try {
+        response = await cloudinary.uploadFile(
+          CloudinaryFile.fromFile(
+            path!,
+            resourceType: CloudinaryResourceType.Image,
+          ),
+        );
+      } on CloudinaryException catch (e) {
+        throw (e.message!);
+      }
+      await FirebaseAuth.instance.currentUser!.updatePhotoURL(response.secureUrl);
+
+      setState(() {
+        _image = img;
+        context.pop();
+      });
+    } on PlatformException {
+      context.pop();
+    }
+  }
+
+  Future<File?> _cropImage({required File imageFile}) async {
+    CroppedFile? croppedImage = await ImageCropper().cropImage(sourcePath: imageFile.path);
+    if (croppedImage == null) return null;
+    return File(croppedImage.path);
+  }
+
+  void _showSelectPhotoOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.28,
+        maxChildSize: 0.4,
+        minChildSize: 0.28,
+        expand: false,
+        builder: (context, scrollController) {
+          return SingleChildScrollView(
+            controller: scrollController,
+            child: SelectPhotoOptionsScreen(
+              onTap: (source) async {
+                _pickImage(source);
+              },
+            ),
+          );
+        },
       ),
     );
   }

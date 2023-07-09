@@ -18,18 +18,25 @@ class VLoginScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                SizedBox(height: 100),
-                SizedBox(
-                  width: double.infinity,
-                  child: LoginForm(),
-                )
-              ],
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await Future.delayed(const Duration(seconds: 1));
+            
+            return;
+          },
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  SizedBox(height: 100),
+                  SizedBox(
+                    width: double.infinity,
+                    child: LoginForm(),
+                  )
+                ],
+              ),
             ),
           ),
         ),

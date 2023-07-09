@@ -49,4 +49,11 @@ class Autenticacion {
     }
     return null;
   }
+  // iniciar sesion con los servicios de google
+  
+
+  Future<void> cerrarSesion() async {
+    await FirebaseAuth.instance.signOut();
+
+  }
 }

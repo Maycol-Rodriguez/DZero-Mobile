@@ -1,41 +1,57 @@
 import 'package:dzero/models/models.dart';
-import 'package:dzero/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-class DetallesDeUsuariosWidget extends ConsumerWidget {
+class DetallesDeUsuariosWidget extends ConsumerStatefulWidget {
   const DetallesDeUsuariosWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  DetallesDeUsuariosWidgetState createState() => DetallesDeUsuariosWidgetState();
+}
+
+class DetallesDeUsuariosWidgetState extends ConsumerState<DetallesDeUsuariosWidget> {
+  @override
+  Widget build(BuildContext context) {
     final TextStyle titleLarge = Theme.of(context).textTheme.titleLarge!;
     final usuario = ref.watch(usuarioAutenticado);
 
-    return GestureDetector(
-      onTap: () => context.pushNamed(VPerfilScreen.name),
-      child: SizedBox(
-        width: double.infinity,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              usuario.displayName!.contains(' ')
-                  ? usuario.displayName!.split(' ').join('\n')
-                  : usuario.displayName!,
-              style: titleLarge,
+    return SizedBox(
+      width: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            usuario.displayName!.contains(' ')
+                ? usuario.displayName!.split(' ').join('\n')
+                : usuario.displayName!,
+            style: titleLarge,
+          ),
+          Container(
+            width: 100,
+            height: 100,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
             ),
-            Hero(
-              tag: 2,
-              child: CircleAvatar(
-                radius: 80,
-                backgroundImage: usuario.photoURL != null
-                    ? NetworkImage(usuario.photoURL!) as ImageProvider<Object>
-                    : const AssetImage('assets/images/avatar.png'),
-              ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(150)),
+              child: usuario.photoURL != null
+                  ? FadeInImage(
+                      placeholder: const AssetImage('assets/loaders/jar-loading.gif'),
+                      image: Image.network(
+                        usuario.photoURL!,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      ).image,
+                    )
+                  : const Image(
+                      image: AssetImage('assets/images/avatar.png'),
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
